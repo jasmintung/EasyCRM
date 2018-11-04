@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<!-- saved from url=(0049)https://v4.bootcss.com/docs/4.0/examples/sign-in/ -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="https://v4.bootcss.com/favicon.ico">
+
+    <title>Signin Template for Bootstrap</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="/static/js/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="/static/css/signin.css" rel="stylesheet">
+  </head>
+
+  <body class="text-center">
+    <form class="form-signin" method="POST">
+        {% csrf_token %}
+{#      <img class="mb-4" src="./Signin Template for Bootstrap_files/bootstrap-solid.svg" alt="" width="72" height="72">#}
+      <h1 class="h3 mb-3 font-weight-normal">请 登陆</h1>
+      <label for="inputname" class="sr-only">用户名</label>
+      <input type="text" id="inputname" name="username" class="form-control" placeholder="请输入用户名" required="" autofocus="">
+      <label for="inputPassword" class="sr-only">密码</label>
+      <input type="password" id="inputPassword" name="password" class="form-control" placeholder="请输入密码" required="">
+      <div class="checkbox mb-3">
+        <label>
+          <input type="checkbox" value="remember-me" name="choice">记住我
+        </label>
+      </div>
+      <button class="btn btn-lg btn-primary btn-block" type="submit">登陆</button>
+      <p class="mt-5 mb-3 text-muted">© 2017-2018</p>
+    </form>
+
+
+</body></html>
