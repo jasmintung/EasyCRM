@@ -26,7 +26,12 @@ SECRET_KEY = 'cl$mty=o@^f&5mn&x33mj-u)$51ed0ep2i%8x!@!9#s$0*2#u&'
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
+        'LOCATION': 'c:/django/cache/bar',
+    }
+}
 
 # Application definition
 
@@ -85,7 +90,7 @@ WSGI_APPLICATION = 'EasyCRM.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
-
+AUTHENTICATION_BACKENDS = ['django.contrib.auth.backends.ModelBackend']
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
@@ -139,3 +144,5 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
 )
+
+AUTH_USER_MODEL = 'repository.UserProfile'  # 自定义用户验证配置需要

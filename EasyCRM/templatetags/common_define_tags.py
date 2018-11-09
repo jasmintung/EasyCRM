@@ -14,10 +14,12 @@ def load_menus(request):
     """
     menus = []
     print("request info", request)
-    print(request.user)  # 获得当前登陆用户名
-    print(dir(request.user.userprofile))
-    print(request.user.userprofile.roles.select_related())  # 因为是多对多,所以一并查找出来
-    for role in request.user.userprofile.roles.select_related():
+    print(dir(request.user))
+    print("登陆账户名:", request.user.name)
+    print(request.user.roles)
+
+    print(request.user.roles.select_related())  # 因为是多对多,所以一并查找出来
+    for role in request.user.roles.select_related():
         menus.extend(role.menus.select_related())
     print("menus:", menus)
     return set(menus)
@@ -148,7 +150,7 @@ def build_table_row(row_obj, table_obj):
 @register.simple_tag
 def get_table_column(column, table_obj):
     """
-    获取字段对应的注释名
+    获取表单中列名
     :param column: 列字段名
     :param table_obj: 表对象
     :return: 列注释名
@@ -156,6 +158,12 @@ def get_table_column(column, table_obj):
     print(table_obj)
     if hasattr(table_obj.model_class, column):
         return table_obj.model_class._meta.get_field(column).verbose_name
+    else:  # 自定义非表中但要在前端显示在表单中的字段
+        if hasattr(table_obj.admin_class, column):
+            field_func = getattr(table_obj.admin_class, column)
+            if hasattr(field_func, 'display_name'):
+                return field_func.display_name
+            return field_func.__name__
 
 
 @register.simple_tag
@@ -164,3 +172,15 @@ def get_column_name(column):
     if column.startswith("-"):
         re_column = column.strip("-")
     return re_column
+
+
+@register.simple_tag
+def display_obj_related(objs):
+    """把对象及所有相关联的数据取出来"""
+    pass
+
+
+@register.simple_tag
+def get_contract(enroll_obj):
+    return enroll_obj.course_grade.contract.template.format(customer_name=enroll_obj.customer.name,
+                                                            course_name=enroll_obj.course_grade.course.name)

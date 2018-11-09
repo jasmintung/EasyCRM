@@ -1,5 +1,5 @@
 from django.contrib import admin
-from easycrmadmin import models
+from repository import models
 
 # Register your models here.
 print("easycrmadmin")  # 这里会在Django启动的时候执行
@@ -19,3 +19,4 @@ admin.site.register(models.Enrollment)
 admin.site.register(models.Menu)
 admin.site.register(models.PaymentRecord)
 admin.site.register(models.CustomerFollowUp)
+admin.site.register(models.ContractTemplate)

@@ -14,23 +14,20 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, re_path
 from django.conf.urls import include
 from EasyCRM import views
-# from easycrmadmin import urls
-# from market import urls
-# from student import urls
-# from teacher import urls
-# from boss import urls
+from EasyCRM import views
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('login/', views.login),
-    path('login/', views.logout),
+    re_path('accounts/login/', views.login, name="mlogin"),  # 没有登陆时Django会自动走到这里进行登陆验证
+    re_path('accounts/logout/', views.logout, name="mlogout"),
     path('easycrmadmin/', include('easycrmadmin.urls')),
     path('market/', include('market.urls')),
     path('student/', include('student.urls')),
     path('teacher/', include('teacher.urls')),
     path('boss/', include('boss.urls')),
+    path('', views.HomePageNavigation.as_view()),
 ]

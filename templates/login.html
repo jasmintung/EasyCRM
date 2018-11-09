@@ -26,6 +26,9 @@
       <label for="inputPassword" class="sr-only">密码</label>
       <input type="password" id="inputPassword" name="password" class="form-control" placeholder="请输入密码" required="">
       <div class="checkbox mb-3">
+        {% if error_info %}
+            <span style="color: red">{{ error_info }}</span>
+        {% endif %}
         <label>
           <input type="checkbox" value="remember-me" name="choice">记住我
         </label>

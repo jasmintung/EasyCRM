@@ -70,7 +70,7 @@ class TableHandler(object):
         self.ordered_field = order_res[1]  # 保存已经进行排序的字段返回给前端用
         self.ordered_field_colnumber = order_res[2]  # 保存已排序字段的列号给前端用
         print("zzzzzzzzzzzzzzz:", self.ordered_field)
-        self.readonly_table = admin_class.readonly_table
+        self.readonly_table = admin_class.readonly_table  # 整张表只读
         self.readonly_fields = admin_class.readonly_fields
         self.list_display = admin_class.list_display
         self.search_fields = admin_class.search_fields

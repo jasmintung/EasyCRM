@@ -1,0 +1,109 @@
+{% extends 'base.html' %}
+{% load common_define_tags %}
+{% block body %}
+<div class="col-lg-12 grid-margin stretch-card">
+    <title>报名</title>
+    <!-- Bootstrap core CSS -->
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="/static/css/form-validation.css" rel="stylesheet">
+
+    <div class="container">
+        <div class="py-5 text-center">
+            <h2>写上您的报名信息吧</h2>
+            <p class="lead">请根据提示填写,部分信息有错误提示.</p>
+        </div>
+        <div class="row">
+            <div class="col-md-8 order-md-1">
+                <h4 class="mb-3">填表</h4>
+                <form class="form-control" novalidate="" method="POST" onsubmit="return beforsubmit(this)">
+                    {% csrf_token %}
+                    {% for field in customer_form %}
+                    <div class="form-group">
+                        <div class="mb-3">
+                            <label for="country">{{ field.label }}</label>
+                            {{ field }}{{ field.errors }}
+                        </div>
+                    </div>
+                    {% endfor %}
+                    <hr>
+                    <div class="form-group">
+                        <label class="col-sm-2 custom-control-label">所报班级</label>
+                        <div class="col-sm-9">
+                            {{ enroll_obj.course_grade }}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 custom-control-label">课程费用</label>
+                        <div class="col-sm-9">
+                            {{ enroll_obj.course_grade.price }}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 custom-control-label">开课日期</label>
+                        <div class="col-sm-9">
+                            {{ enroll_obj.course_grade.start_date }}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 custom-control-label">合同</label>
+                        <div class="col-sm-12">
+                            <pre style="height: 450px;overflow: auto">{% get_contract enroll_obj %}</pre>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-12">
+                            <input type="checkbox" name="contract_agreed" />我已阅读完所有协议并接受所有合同约束条款
+                        </div>
+                    </div>
+                    <button class="btn btn-primary btn-block" type="submit">提交</button>
+                </form>
+            </div>
+        </div>
+        <hr>
+
+        <p>请上传您的证件照</p>
+        <form id="filedropzone" method="post" action="/upload" class="dropzone dz-clickable" >
+            <div class="dz-default dz-message dz-preview">
+                <div class="dz-icon icon-wrap icon-circle icon-wrap-md">
+                    <i class="fa fa-cloud-upload fa-3x"></i>
+                </div>
+                <div>
+                    <p class="dz-text">把照片放在这里</p>
+                    <p class="text-muted">最多可上传2张照片</p>
+                </div>
+            </div>
+        </form>
+
+        </div>
+        <div class="form-group">
+            <footer class="my-5 pt-5 text-muted text-center text-small">
+                <p class="mb-1">© 2017-2018 Company Name</p>
+                <ul class="list-inline">
+                    <li class="list-inline-item"><a href="https://v4.bootcss.com/docs/4.0/examples/checkout/#">Privacy</a></li>
+                    <li class="list-inline-item"><a href="https://v4.bootcss.com/docs/4.0/examples/checkout/#">Terms</a></li>
+                    <li class="list-inline-item"><a href="https://v4.bootcss.com/docs/4.0/examples/checkout/#">Support</a></li>
+                </ul>
+            </footer>
+        </div>
+    </div>
+    {% block bottom-jsp %}
+        <script src="/static/js/jquery.min.js"></script>
+        <script>
+            function beforsubmit(ele) {
+                /*先简单处理*/
+                if($("form :checkbox[name='contract_agreed']").prop('checked')){
+                    $('select[disabled=disabled]').removeAttr('disabled');
+                    $('input[disabled=disabled]').removeAttr('disabled');
+                    return true;
+                }
+                else{
+                    alert("必须同意合同才能报名.");
+                    return false;
+                }
+            }
+        </script>
+    {% endblock %}
+</div>
+{% endblock %}

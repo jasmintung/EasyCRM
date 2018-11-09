@@ -4,11 +4,11 @@
 @-webkit-keyframes chartjs-render-animation{from{opacity:0.99}to{opacity:1}}@keyframes chartjs-render-animation{from{opacity:0.99}to{opacity:1}}.chartjs-render-monitor{-webkit-animation:chartjs-render-animation 0.001s;animation:chartjs-render-animation 0.001s;}</style>
 {% block body %}
     <nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0">
-      <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">EasyCRM | {{ request.user.userprofile.name }}</a>
+      <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">EasyCRM | {{ request.user.name }}</a>
       <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search">
       <ul class="navbar-nav px-3">
         <li class="nav-item text-nowrap">
-          <a class="nav-link" href="#">注销</a>
+          <a class="nav-link" href="/accounts/logout/">注销</a>
         </li>
       </ul>
     </nav>
@@ -53,7 +53,9 @@
           <canvas class="my-4 chartjs-render-monitor" id="myChart" width="1018" height="429" style="display: block; width: 1018px; height: 429px;"></canvas>
 
           <h2>Section title</h2>
-          <div class="table-responsive">
+            {% block tb_area %}
+            {% endblock %}
+          <!--div class="table-responsive">
             <table class="table table-striped table-sm">
               <thead>
                 <tr>
@@ -81,7 +83,7 @@
                 </tr>
               </tbody>
             </table>
-          </div>
+          </div-->
         </main>
       </div>
     </div>

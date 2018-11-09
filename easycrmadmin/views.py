@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, reverse
 from django.shortcuts import HttpResponse
 # Create your views here.
 from EasyCRM import app_config
@@ -6,9 +6,12 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from easycrmadmin.easycrm_admin import site
 from easycrmadmin import table_operate
 from forms import ad_forms
+from django.contrib.auth import login, logout, authenticate
+from django.contrib.auth.decorators import login_required
 import json
 
 
+@login_required
 def main_pg(request):
     print('easyadmin boot page')
     # return HttpResponse('easyadmin')
@@ -16,6 +19,7 @@ def main_pg(request):
     return render(request, 'admin/easy_admin.html', {'enabled_apps': site.enabled_funcs})
 
 
+@login_required
 def app_tables(request, app_name):
     enabled_tb_cls = {app_name: site.enabled_funcs[app_name]}
     print("t app_name:", app_name)
@@ -45,7 +49,8 @@ def update_tb_rows(request, edit_datas, admin_class):
     return True, []
 
 
-def table_display(request, app_name, table_name):
+@login_required
+def table_display(request, app_name, table_name, innercall=False):
     """
     获取具体哪张表的数据
     :param request:
@@ -100,16 +105,47 @@ def table_display(request, app_name, table_name):
                            'paginator': paginator,
                            'errors': errors,
                            'enabled_func': site.enabled_funcs}
+            if innercall:
+                return return_data
             return render(request, 'admin/model_obj_list.html', return_data)
 
     else:
         return HttpResponse("go ahead")
 
 
+@login_required
 def table_modify(request, app_name, table_name, obj_nid):
     print(app_name, table_name, obj_nid)
+    if app_name in site.enabled_funcs:
+        if table_name in site.enabled_funcs[app_name]:
+            admin_class = site.enabled_funcs[app_name][table_name]
+            obj = admin_class.model.objects.get(id=obj_nid)
+            fields = []
+            for field_obj in admin_class.model._meta.fields:
+                if field_obj.editable:
+                    fields.append(field_obj.name)
+            for field_obj in admin_class.model._meta.many_to_many:
+                fields.append(field_obj)
+            model_form = ad_forms.init_modelform(admin_class.model, fields, admin_class)
+            if request.method == "GET":
+                form_obj = model_form(instance=obj)
+            elif request.method == "POST":
+                form_obj = model_form(request.POST, instance=obj)
+                if form_obj.is_valid():
+                    form_obj.validate_unique()  # 校验field的唯一性
+                    if form_obj.is_valid():
+                        print("修改成功")
+                        form_obj.save()
+
+            return render(request, 'admin/admin_tb_modify.html', {'form_obj': form_obj,
+                                                                  'model_verbose_name': admin_class.model._meta.verbose_name,
+                                                                  'model_name': admin_class.model._meta.model_name,
+                                                                  'app_name': app_name,
+                                                                  'admin_class': admin_class,
+                                                                  'enabled_admins': site.enabled_funcs})
 
 
+@login_required
 def table_add(request, app_name, model_name):
     """
     表格添加
@@ -153,3 +189,35 @@ def table_add(request, app_name, model_name):
                            'admin_class': admin_class,
                            'app_name': app_name,
                            'enabled_admins': site.enabled_funcs})
+
+
+@login_required
+def table_delete(request, app_name, model_name, nid):
+    """
+    删除信息
+    :param request:
+    :param app_name:
+    :param model_name:
+    :param nid:
+    :return:
+    """
+    print(app_name, model_name, nid)
+    if app_name in site.enabled_funcs:
+        if model_name in site.enabled_funcs[app_name]:
+            admin_class = site.enabled_funcs[app_name][model_name]
+            delete_obj = admin_class.model.objects.filter(id=nid)
+            print(delete_obj)
+            if request.method == "POST":
+                # print(request.POST)
+                delete_flag = request.POST.get("_delete_confirm")
+                # print(reverse('this_table', args=(app_name, model_name,)))
+                if delete_flag == "yes":
+                    try:
+                        delete_obj.delete()
+                        backc_url = reverse('this_table', args=(app_name, model_name,))
+                        return redirect(backc_url)
+                    except Exception as ex:
+                        return HttpResponse(ex)
+            return render(request, 'admin/obj_delete_table.html', {'model_verbose_name': admin_class.model._meta.verbose_name,
+                                                                   'model_name': admin_class.model._meta.model_name,
+                                                                   'delete_obj': delete_obj, 'app_name': app_name})

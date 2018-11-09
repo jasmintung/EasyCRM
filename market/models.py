@@ -1,7 +1,7 @@
 # Create your models here.
 from django.db import models
 
-from easycrmadmin.models import UserProfile, Customer
+from repository.models import UserProfile, Customer
 # Create your models here.
 
 

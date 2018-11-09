@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="icon" href="https://v4.bootcss.com/favicon.ico">
+    <!--link rel="icon" href="https://v4.bootcss.com/favicon.ico"-->
 
     <title>CRM</title>
 
@@ -15,6 +15,7 @@
 
     <!-- Custom styles for this template -->
     <link href="/static/css/dashboard.css" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/dropzone.css">
 </head>
 <body>
 {% block body %}
@@ -34,4 +35,7 @@
 
     <!-- Graphs -->
     <script src="/static/js/Chart.min.js"></script>
+    <script src="/static/js/dropzone.js"></script>
+{% block bottom-jsp %}
+{% endblock %}
 </html>
