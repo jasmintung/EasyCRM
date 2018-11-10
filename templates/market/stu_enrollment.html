@@ -64,14 +64,15 @@
         <hr>
 
         <p>请上传您的证件照</p>
-        <form id="filedropzone" method="post" action="/upload" class="dropzone dz-clickable" >
+        <form id="filedropzone" method="post" action="{{ request.path }}" class="dropzone dz-clickable" >
+            {% csrf_token %}
             <div class="dz-default dz-message dz-preview">
                 <div class="dz-icon icon-wrap icon-circle icon-wrap-md">
                     <i class="fa fa-cloud-upload fa-3x"></i>
                 </div>
                 <div>
-                    <p class="dz-text">把照片放在这里</p>
-                    <p class="text-muted">最多可上传2张照片</p>
+                    <p class="dz-text">请点击这里把照片放在这里</p>
+                    <p class="text-muted">至少两张图片</p>
                 </div>
             </div>
         </form>
@@ -93,6 +94,10 @@
         <script>
             function beforsubmit(ele) {
                 /*先简单处理*/
+                if (myDropzone.files.length < 2){
+                    alert("请至少上传2张图片");
+                    return false;
+                }
                 if($("form :checkbox[name='contract_agreed']").prop('checked')){
                     $('select[disabled=disabled]').removeAttr('disabled');
                     $('input[disabled=disabled]').removeAttr('disabled');
@@ -103,6 +108,31 @@
                     return false;
                 }
             }
+            $(document).ready(function () {
+                Dropzone.options.myAwesomeDropzone = {
+                    paramName: "file",
+                    maxFilesize: 4, //MB
+                    maxFiles: 4,
+                    url: "{{ request.path }}",
+                    uploadMultiple: true,
+                    accept: function (file, done) {
+                        if (!file.name.endsWith('.jpg')){
+                            done("上传格式不正确")
+                        }else{
+                            done();
+                        }
+                    }
+                };
+
+                Dropzone.autoDiscover = false;
+                myDropzone = new Dropzone("#filedropzone");
+                myDropzone.on("addedfile", function (file) {
+
+                });
+                myDropzone.on("success", function (file, response) {
+                    console.log("pic upload success", response);
+                });
+            });
         </script>
     {% endblock %}
 </div>

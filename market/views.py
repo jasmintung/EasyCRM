@@ -7,6 +7,8 @@ from market.easy_admin import site
 from forms import stu_form
 from django.core.cache import cache
 import json
+import os
+from EasyCRM.settings import ENROLLED_DATA
 # Create your views here.
 
 
@@ -69,7 +71,8 @@ def enrollment(request, nid):
             # # 判断是不是已经有报名记录了
             if form.is_valid():
                 existed_enrollment_obj = models.Enrollment.objects.filter(customer=customer_obj,
-                                                                          course_grade=request.POST.get('course_grade'))
+                                                                          course_grade_id=request.POST.get('course_grade'))
+                print("existed_enrollment_obj:", existed_enrollment_obj)
                 if existed_enrollment_obj:
                     if existed_enrollment_obj.filter(contract_agreed=True):
                         # 学员是否已经确认填好报名表了
@@ -89,12 +92,14 @@ def enrollment(request, nid):
 
                         else:
                             result_msg = {'pass': 2, 'step': 3, 'msg': "等待审核", 'enroll_obj': form.instance}
+                        form = model_form(post_data, instance=enroll_obj)
                     else:
                         print("id:", form.instance.id)
                         result_msg = {'pass': 1, 'step': 2, 'msg': "等待学生签合同", 'enroll_obj': existed_enrollment_obj[0]}
+
                 else:
                     form.save()
-                    cache.set(form.instance.id, "available time", 5*60)  # 报名链接5分钟的有效时间,报名链接动态字符串后续完善把
+                    cache.set(form.instance.id, "available time", 60*60)  # 报名链接一小时的有效时间,报名链接动态字符串后续完善把
                     print("id:", form.instance.id)
                     result_msg = {'pass': 1, 'step': 2, 'enroll_obj': form.instance}
                     print("enrollment save")
@@ -121,24 +126,49 @@ def enrollment(request, nid):
 
 
 def stu_enrollment(request, enrollment_id):
-
+    """
+    交给学生填写的报名页
+    :param request:
+    :param enrollment_id:报名表ID
+    :return:
+    """
     print("stu_enrollment:", enrollment_id)
     if cache.get(enrollment_id) == "available time":
 
         try:
             enroll_obj = models.Enrollment.objects.get(id=enrollment_id)
             if request.method == "GET":
-                customer_form = stu_form.CustomerForm(instance=enroll_obj.customer)
+                contract_form = stu_form.CustomerForm(instance=enroll_obj.customer)
             elif request.method == "POST":
+                # print("选择情况:", request.POST.get("contract_agreed"))
+                # if request.POST.get("contract_agreed") == "on":
+                #     pass
+                if request.is_ajax():  # 处理图片
+                    print(request.FILES)
+                    save_path = "%s%s%s" % (ENROLLED_DATA, os.sep, enrollment_id)
+                    if not os.path.exists(save_path):
+                        os.makedirs(save_path, exist_ok=True)
+                    print("save path:", save_path)
+                    for k, v in request.FILES.items():
+                        print("file name:", v.name)
+                        with open("%s%s%s" % (save_path, os.sep, v.name), 'wb') as fw:  # 针对不同机器可能会有写入权限的问题.
+                            for chunk in v.chunks():
+                                fw.write(chunk)
+                    return HttpResponse("上传成功")
                 print(request.POST)
-                customer_form = stu_form.CustomerForm(request.POST, instance=enroll_obj.customer)
-                print("更新后:", customer_form)
-                if customer_form.is_valid():
+                contract_form = stu_form.CustomerForm(request.POST, instance=enroll_obj.customer)
+                # print("更新后:", customer_form)
+                if contract_form.is_valid():
                     print("没有问题")
+                    contract_form.save()
+                    if request.POST.get("contract_agreed") == "on":
+                        enroll_obj.contract_agreed = True
+                    enroll_obj.save()
+                    print("签字情况:", enroll_obj.contract_agreed)
                     return HttpResponse("报名成功了!")
                 else:
-                    print(customer_form.errors)
-            return render(request, 'market/stu_enrollment.html', {'enroll_obj': enroll_obj, 'customer_form': customer_form})
+                    print(contract_form.errors)
+            return render(request, 'market/stu_enrollment.html', {'enroll_obj': enroll_obj, 'customer_form': contract_form})
         except models.Enrollment.DoesNotExist as es:
             return HttpResponse("报名表不见了.")
     else:

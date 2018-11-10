@@ -9,7 +9,6 @@
 <body>
 <div class="container">
     {{ enrollment_form.errors }}
-{{ response.step }}
 	<div class="row">
 		<section>
         <div class="wizard">
@@ -101,10 +100,57 @@
                     <div class="tab-pane {% if response.step < 4 and response.step >= 3 %}active{% endif %}" role="tabpanel" id="step3">
                         <h3>Step 3</h3>
                         <p style="color: #1b6d85;font-size: 30px">审核</p>
+                        <p>基本信息</p>
+                        <hr>
+                        <div class="form-group">
+                        <label class="col-lg-3 control-label">客户</label>
+                        <div class="col-lg-7">
+                            <select type="text" name="customer" value="{{ customer_obj.id }}" class="form-control" >
+                                <option value="{{ customer_obj.id }}">{{ customer_obj }}</option>
+                            </select>
+                        </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-3 control-label">{{ enrollment_form.school.label }}</label>
+                            <div class="col-lg-7">
+                                {{ enrollment_form.school }}
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-3 control-label">{{ enrollment_form.course_grade.label }}</label>
+                            <div class="col-lg-7">
+                                {{ enrollment_form.course_grade }}
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-3 control-label">{{ enrollment_form.contract_agreed.label }}</label>
+                            <div class="col-lg-7">
+                                <div class="checkbox">
+                                    <label class="form-checkbox form-icon form-text">
+                                        <input type="checkbox" value="java" name="acceptTerms" disabled checked> 客户已同意协议内容
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-3 control-label">{{ enrollment_form.contract_approved.label }}</label>
+                            <div class="col-lg-7">
+                                <div class="checkbox">
+                                    <label class="form-checkbox form-icon form-text">
+                                        {% if response.step > 3 %}
+                                        <input type="checkbox"  name="contract_approved" checked disabled> 验证学员资料无误后选中此框
+                                        {% else %}
+                                        <input type="checkbox"  name="contract_approved" > 验证学员资料无误后选中此框
+                                        {% endif %}
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
                         <ul class="list-inline pull-right">
-                            <li><button type="button" class="btn btn-default prev-step">Previous</button></li>
-                            <li><button type="button" class="btn btn-default next-step">Skip</button></li>
-                            <li><button type="submit" class="btn btn-primary btn-info-full next-step">Save and continue</button></li>
+                            <!--li><button type="button" class="btn btn-default prev-step">上一步</button></li-->
+                            <li><button type="button" class="btn btn-default next-step">驳回</button></li>
+                            <li><button type="submit" class="btn btn-primary btn-info-full next-step">通过</button></li>
                         </ul>
                     </div>
                     <div class="tab-pane {% if response.step < 5 and response.step >= 4 %}active{% endif %}" role="tabpanel" id="complete">

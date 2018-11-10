@@ -25,6 +25,9 @@ class CustomerForm(ModelForm):
         if self.cleaned_data.get('qq', None):
             if self.instance.qq != self.cleaned_data['qq']:
                 self.add_error('qq', "请不要非法修改!")
+        return self.cleaned_data['qq']
 
     def clean_source(self):
         print(self.cleaned_data['source'])
+        return self.cleaned_data['source']
+
