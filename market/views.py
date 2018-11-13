@@ -61,6 +61,27 @@ def enrollment(request, nid):
                                              site.enabled_funcs[models.Enrollment._meta.app_label][models.Enrollment._meta.model_name])
         form = model_form()
         if request.method == "POST":
+            if request.POST.get('paid_fee'):
+                enroll_obj = None
+                print(request.POST)
+                fields = []
+                for field_obj in models.PaymentRecord._meta.fields:
+                    if field_obj.editable:
+                        fields.append(field_obj.name)
+                model_form = ad_forms.init_modelform(models.PaymentRecord, fields,
+                                                     site.enabled_funcs[models.PaymentRecord._meta.app_label][models.PaymentRecord._meta.model_name])
+
+                form = model_form(request.POST)
+                if form.is_valid():
+                    print("报名成功")
+                    form.save()
+                    enroll_obj = form.instance.enrollment
+                    customer_obj.status = "signed"  # 更新客户表报名状态
+                    customer_obj.save()
+                    result_msg = {'pass': 4, 'step': 5, 'msg': "报名成功"}
+                return render(request, 'market/market_enrollment.html', {"response": result_msg,
+                                                                         'enroll_obj': enroll_obj})
+
             post_data = request.POST.copy()
             print("POST DATA:", post_data)
             form = model_form(post_data)
@@ -88,7 +109,21 @@ def enrollment(request, nid):
                                 print("enrollment success")
                             else:
                                 # 等待假设财务核实账目
-                                result_msg = {'pass': 3, 'step': 4, 'msg': "等待财务核实", 'enroll_obj': form.instance}
+                                fields = []
+                                for field_obj in models.PaymentRecord._meta.fields:
+                                    if field_obj.editable:
+                                        fields.append(field_obj.name)
+                                print("fields:", fields)
+                                print("what the:", site.enabled_funcs[models.PaymentRecord._meta.app_label][models.PaymentRecord._meta.model_name])
+                                model_form = ad_forms.init_modelform(models.PaymentRecord,
+                                                                     fields,
+                                                                     site.enabled_funcs[models.PaymentRecord._meta.app_label][models.PaymentRecord._meta.model_name])
+                                form = model_form()
+                                result_msg = {'pass': 3, 'step': 4, 'msg': "等待财务核实"}
+                                return render(request, 'market/market_enrollment.html', {"payment_form": form,
+                                                                                         "customer_obj": customer_obj,
+                                                                                         'enroll_obj': enroll_obj,
+                                                                                         "response": result_msg})
 
                         else:
                             result_msg = {'pass': 2, 'step': 3, 'msg': "等待审核", 'enroll_obj': form.instance}

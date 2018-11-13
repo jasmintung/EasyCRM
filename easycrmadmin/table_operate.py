@@ -3,36 +3,49 @@ from django.db.models import Count, Q
 import time
 
 
-def table_filter(request, admin_class, model_class):
+def table_filter(request, admin_class):
     """
-    前端有过滤数据
+    根据自定义过滤(筛选)字段查询数据
     :param request:
     :param admin_class:
-    :param model_class:
-    :return:
+    :return: 查询后的数据
     """
     filter_conditions = {}
-    if hasattr(admin_class, 'list_filter'):
+    if hasattr(admin_class, 'list_filter'):  # 判断这张表是否自定义了可筛选字段
         for condition in admin_class.list_filter:
-            if request.GET.get(condition):
-                field_type = model_class._meta.get_field(condition).__repr__()  # <django.db.models.fields.CharField: source>
+            if request.GET.get(condition):  # 前端有根据筛选字段进行数据请求
+                field_type = admin_class.model._meta.get_field(condition).__repr__()  # <django.db.models.fields.CharField: source>
                 # print("field type++:", field_type)
                 if 'ForeignKey' in field_type:  # 外键类型
                     filter_conditions['%s_id' % condition] = request.GET.get(condition)
                 elif 'DateField' in field_type:  # 日期类型
                     filter_conditions['%s__gt' % condition] = request.GET.get(condition)
+                elif 'ManyToMany' in field_type:  # 多对多类型
+                    pass
     print("filter conditions: ", filter_conditions)
-    return model_class.objects.filter(**filter_conditions)
+    return admin_class.model.objects.filter(**filter_conditions)
 
 
 def table_search(request, querysets, admin_class):
-    """前端有搜索数据"""
+    """
+    根据自定义搜索字段查询数据
+    :param request:
+    :param querysets: 过滤后的querysets
+    :param admin_class:
+    :return: 查询后的数据
+    """
+    search_condition = request.GET.get("q")
+    if search_condition:
+        q_objs = []
+        for q_filed in admin_class.search_fields:
+            q_objs.append("Q(%s__contains='%s')" % (q_filed, search_condition))
+        return querysets.filter(eval("|".join(q_objs)))
     return querysets
 
 
 def table_orderby(request, querysets, admin_class):
     """
-    根据字段名排序数据
+    根据前端请求字段排序数据
     :param request:
     :param querysets:
     :param admin_class:
@@ -42,39 +55,41 @@ def table_orderby(request, querysets, admin_class):
     ordered_colnumber = -1
     # print("will to order data:", querysets)
     # print("admin_class:", admin_class)
-    orderby_field = request.GET.get('orderby')  # 排序的字段名
+    orderby_field = request.GET.get('orderby')  # 排序的字段
     if orderby_field:
         # print("orderby_field:", orderby_field)
-        print(dir(querysets))
+        # print(dir(querysets))
         ordered_obj = querysets.order_by(orderby_field)
-
-        ordered_colnumber = admin_class.list_display.index(orderby_field.strip('-'))
-        if orderby_field.startswith("-"):  # 做这个操作的目的是方便数据库操作!
-            orderby_field = orderby_field.strip("-")
-        else:
-            orderby_field = "-%s" % orderby_field
-        return [ordered_obj, orderby_field, ordered_colnumber]
+        if orderby_field in admin_class.list_display:
+            ordered_colnumber = admin_class.list_display.index(orderby_field.strip('-'))  # 字段在哪一列
+            if orderby_field.startswith("-"):  # 做这个操作的目的是方便数据库操作!
+                orderby_field = orderby_field.strip("-")
+            else:
+                orderby_field = "-%s" % orderby_field
+            return [ordered_obj, orderby_field, ordered_colnumber]
     return [querysets, orderby_field, None]
 
 
 class TableHandler(object):
-    def __init__(self, request, model_class, admin_class, queryset, order_res):
+    # 根据实际情况初始化一些数据
+    def __init__(self, request, admin_class, queryset, order_res):
         self.request = request
         self.admin_class = admin_class
-        self.model_class = model_class
+        self.model_class = admin_class.model
         self.model_verbose_name = self.model_class._meta.verbose_name
         self.model_name = self.model_class._meta.model_name
-        self.actions = admin_class.actions
-        self.list_editable = admin_class.list_editable
-        self.query_sets = queryset
+
+        self.readonly_table = admin_class.readonly_table  # 整张表是否只读
+        self.readonly_fields = admin_class.readonly_fields  # 只读的字段
+        self.list_display = admin_class.list_display  # 可显示的字段
+        self.list_editable = admin_class.list_editable  # 可编辑的字段
+        self.list_filter = self.get_list_filter(admin_class.list_filter)  # 可筛选的字段
+        self.search_fields = admin_class.search_fields  # 可搜索的字段
+        self.actions = admin_class.actions  # action
+
         self.ordered_field = order_res[1]  # 保存已经进行排序的字段返回给前端用
         self.ordered_field_colnumber = order_res[2]  # 保存已排序字段的列号给前端用
-        print("zzzzzzzzzzzzzzz:", self.ordered_field)
-        self.readonly_table = admin_class.readonly_table  # 整张表只读
-        self.readonly_fields = admin_class.readonly_fields
-        self.list_display = admin_class.list_display
-        self.search_fields = admin_class.search_fields
-        self.list_filter = self.get_list_filter(admin_class.list_filter)
+        self.query_sets = queryset
 
     def get_list_filter(self, list_filter):
         self.list_filter = []
@@ -82,18 +97,20 @@ class TableHandler(object):
         # print("list filters", list_filter)
         for i in list_filter:
             col_obj = self.model_class._meta.get_field(i)
-            # print("col obj", col_obj)  # 表具体某字段
+            # print("col obj", col_obj)  # 具体某字段
             data = {
                 'verbose_name': col_obj.verbose_name,
                 'column_name': i,
             }
-            # print("字段类型:", col_obj.deconstruct()[1])
+            print("字段类型:", col_obj.deconstruct()[1])  # 序列化对象获得类型
             if col_obj.deconstruct()[1] not in ('django.db.models.DateField', 'django.db.models.DateTimeField'):
                 try:
+                    print("ok:", col_obj.get_choices())
                     choices = col_obj.get_choices()
 
                 except AttributeError as e:
                     choices_list = col_obj.model.objects.values(i).annotate(count=Count(i))
+                    print(choices_list)
                     choices = [[obj[i], obj[i]] for obj in choices_list]
                     choices.insert(0, ['', '----------'])
             else:  # 特殊处理datefield

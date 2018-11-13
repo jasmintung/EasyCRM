@@ -1,4 +1,5 @@
 # 这里基本按照Django开发文档例子进行编写,客服操作自定制
+# 配置了list_display并有填字段,那么前端会显示对应字段,其它属性类同配置即可
 from django import forms
 from django.contrib import admin
 from django.contrib.auth.models import Group
@@ -78,25 +79,24 @@ class UserProfileAdmin(BaseEasyCrmAdmin):
     #         'fields': ('email', 'date_of_birth', 'password1', 'password2')}
     #     ),
     # )
-    search_fields = ('email',)
+    search_fields = ['email']
     ordering = ('email',)
     filter_horizontal = ()
 
 
 class EnrollmentAdmin(BaseEasyCrmAdmin):
     model = models.Enrollment
-    list_display = ['customer', 'school', 'course_grade', 'contract_agreed', 'contract_approved', 'enrolled_date']
+    list_display = ('customer', 'school', 'course_grade', 'contract_agreed', 'contract_approved', 'enrolled_date', )
     fk_fields = ['school', 'course_grade']
-# Now register the new UserAdmin...
 
 
 class CustomerAdmin(BaseEasyCrmAdmin):
     model = models.Customer
     # enroll字段用于表示不是表中的字段但前端显示时可以显示在同一张表信息中
-    list_display = ['qq', 'qq_name', 'name', 'phone', 'source', 'consultant', 'status', 'date', 'enroll']
+    list_display = ('qq', 'qq_name', 'name', 'phone', 'source', 'consultant', 'status', 'date', 'enroll', )
     list_editable = ['phone', 'source', 'consultant', 'status']
-    list_filter = ['source', 'consultant', 'status']
-    search_fields = ['qq', 'consultant__email']
+    list_filter = ('source', 'consultant', 'status', 'date', )
+    search_fields = ['qq', 'phone']
 
     def enroll(self):
         """
@@ -111,10 +111,38 @@ class CustomerAdmin(BaseEasyCrmAdmin):
     enroll.display_name = "报名链接"
 
 
+class PaymentRecordAdmin(BaseEasyCrmAdmin):
+    model = models.PaymentRecord
+    list_filter = ('pay_type', 'date', 'consultant')
+    list_display = ('id', 'enrollment', 'pay_type', 'paid_fee', 'date', 'consultant')
+    fk_fields = ('enrollment', 'consultant')
+    choice_fields = ('pay_type', )
+
+
+class RoleAdmin(BaseEasyCrmAdmin):
+    list_display = ('name', )
+    filter_horizontal = ('menus', )
+
+
+class CourseAdmin(BaseEasyCrmAdmin):
+    list_display = ('id', 'name', 'period')
+
+
+class ClasslistAdmin(BaseEasyCrmAdmin):
+    list_display = ('branch', 'course', 'semester', 'start_date')
+    fk_fields = ('branch', 'course')
+    filter_horizontal = ('teachers',)
+    readonly_fields = ['price', 'semester']
+
+
 print("market register")
 site.register(models.UserProfile, UserProfileAdmin)
 site.register(models.Customer, CustomerAdmin)
 site.register(models.Enrollment, EnrollmentAdmin)
+site.register(models.Course, CourseAdmin)
+site.register(models.ClassList, ClasslistAdmin)
+site.register(models.Role, RoleAdmin)
+site.register(models.PaymentRecord, PaymentRecordAdmin)
 # ... and, since we're not using Django's built-in permissions,
 # unregister the Group model from admin.
 # site.unregister(Group)

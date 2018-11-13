@@ -52,9 +52,11 @@
             <form class="form-horizontal" id="erf" enctype="multipart/form-data" method="post">
                 {% csrf_token %}
                 <div class="tab-content">
-                    <div class="tab-pane {% if response.step < 2 %}active{% endif %}" role="tabpanel" id="step1">
-                        <h3>Step 1</h3>
-                        <p style="color: #1b6d85;font-size: 30px">报名信息录入</p>
+                    <div class="tab-pane {% if response.step == 3 or response.step == 1 %}active{% endif %}" role="tabpanel" id="step1">
+                        {% if response.step == 1 %}
+                            <h3>Step 1</h3>
+                            <p style="color: #1b6d85;font-size: 30px">报名信息录入</p>
+                        {% endif %}
                         <div class="form-group">
                             <label class="col-lg-3 control-label">客户</label>
                             <div class="col-lg-7">
@@ -86,7 +88,7 @@
                             <!--li><button type="button" class="btn btn-primary next-step">Save and continue</button></li-->
                         </ul>
                     </div>
-                    <div class="tab-pane {% if response.step < 3 and response.step >= 2 %}active{% endif %}" role="tabpanel" id="step2">
+                    <div class="tab-pane {% if response.step == 2 %}active{% endif %}" role="tabpanel" id="step2">
                         <h3>Step 2</h3>
                         <p style="color: #1b6d85;font-size: 30px">生成报名链接发给客户</p>
                         <ul class="list-inline pull-right">
@@ -97,31 +99,7 @@
                             <li><button type="submit" class="btn btn-primary next-step">下一步</button></li>
                         </ul>
                     </div>
-                    <div class="tab-pane {% if response.step < 4 and response.step >= 3 %}active{% endif %}" role="tabpanel" id="step3">
-                        <h3>Step 3</h3>
-                        <p style="color: #1b6d85;font-size: 30px">审核</p>
-                        <p>基本信息</p>
-                        <hr>
-                        <div class="form-group">
-                        <label class="col-lg-3 control-label">客户</label>
-                        <div class="col-lg-7">
-                            <select type="text" name="customer" value="{{ customer_obj.id }}" class="form-control" >
-                                <option value="{{ customer_obj.id }}">{{ customer_obj }}</option>
-                            </select>
-                        </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-lg-3 control-label">{{ enrollment_form.school.label }}</label>
-                            <div class="col-lg-7">
-                                {{ enrollment_form.school }}
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-lg-3 control-label">{{ enrollment_form.course_grade.label }}</label>
-                            <div class="col-lg-7">
-                                {{ enrollment_form.course_grade }}
-                            </div>
-                        </div>
+                    <div class="tab-pane {% if response.step == 3 %}active{% endif %}" role="tabpanel" id="step3">
                         <div class="form-group">
                             <label class="col-lg-3 control-label">{{ enrollment_form.contract_agreed.label }}</label>
                             <div class="col-lg-7">
@@ -153,9 +131,34 @@
                             <li><button type="submit" class="btn btn-primary btn-info-full next-step">通过</button></li>
                         </ul>
                     </div>
-                    <div class="tab-pane {% if response.step < 5 and response.step >= 4 %}active{% endif %}" role="tabpanel" id="complete">
-                        <h3>Complete</h3>
-                        <p style="color: red;font-size: 30px">报名成功.</p>
+                    <div class="tab-pane {% if response.step == 4 %}active{% endif %}" role="tabpanel" id="complete">
+                        <h3>Step3</h3>
+                        <p style="color: red;font-size: 30px">创建缴费记录.</p>
+                        {% for field in payment_form %}
+                            <div class="form-group">
+                                <label class="col-lg-3 control-label">{{ field.label }}</label>
+                                <div class="col-lg-7">
+                                    {% if field.name == 'enrollment' %}
+                                        <select name="enrollment" class="form-control">
+                                            <option value="{{ enroll_obj.id }}">{{ enroll_obj }}</option>
+                                        </select>
+                                    {% else %}
+                                        {{ field }}
+                                    {% endif %}
+                                </div>
+                            </div>
+                        {% endfor %}
+                        <ul class="list-inline pull-right">
+                            <li><button type="button" class="btn btn-default prev-step">上一步</button></li>
+                            <li><button type="submit" class="btn btn-default next-step">提交</button></li>
+                        </ul>
+                    </div>
+                    <div class="tab-pane {% if response.step == 5 %}active{% endif %}" role="tabpanel" id="complete">
+                        <h3>completed</h3>
+                        <p style="color: red;font-size: 30px">报名成功!.</p>
+                        <button type="button" class="btn btn-default next-step">
+                            <a href="/market/customers/">返回</a>
+                        </button>
                     </div>
                     <div class="clearfix"></div>
                 </div>

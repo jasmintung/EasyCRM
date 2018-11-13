@@ -18,7 +18,7 @@ def login(request):
         password = request.POST.get('password')
         print("password:", password)
 
-        # user = authenticate(username=username, password=password)  # 目前的Django版本无法明文比较了,这个方法不能用,蛋疼
+        # user = authenticate(username=username, password=password)  # 目前的Django版本无法明文比较了,这个方法不能用,超级账户除外
         # print("uiser:", user)
         try:
             user = models.UserProfile.objects.get(name=username)
@@ -31,7 +31,14 @@ def login(request):
                         Login(request, user)
                         # 这里加一个角色判断,然后跳转到对应的URL
                         print("ok")
-                        return redirect(request.GET.get("next"))  # 测试登陆验证用
+                        if request.GET.get("next").find("easycrmadmin"):
+                            # print("管理员路径")
+                            if user.is_admin:
+                                return redirect(request.GET.get("next"))
+                            else:
+                                errors = "账户或密码错误"
+                        else:
+                            return redirect(request.GET.get("next"))
                         # return redirect('/market')  # 测试登陆验证用
                     else:
                         errors = "账户未激活"

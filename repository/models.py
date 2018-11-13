@@ -93,7 +93,7 @@ class Enrollment(models.Model):
     """存储学员报名的信息"""
 
     # 所有报名的学生 肯定是来源于客户信息表的,先咨询,后报名嘛
-    customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
+    customer = models.ForeignKey("Customer", on_delete=models.CASCADE)
     school = models.ForeignKey('Branch', verbose_name=u'校区', on_delete=models.CASCADE)
 
     # 选择报的班级, 班级是关联课程的
@@ -193,7 +193,7 @@ class Course(models.Model):
 class CourseRecord(models.Model):
     """存储各班级的上课记录"""
     # 讲师创建上课纪录时要选择是上哪个班的课
-    course = models.ForeignKey(ClassList, verbose_name=u"班级(课程)", on_delete=None)
+    from_class = models.ForeignKey("ClassList", verbose_name=u"班级(课程)", on_delete=None)
     day_num = models.IntegerField(u"节次", help_text=u"此处填写第几节课或第几天课程...,必须为数字")
     date = models.DateField(auto_now_add=True, verbose_name=u"上课日期")
     teacher = models.ForeignKey("UserProfile", verbose_name=u"讲师", on_delete=None)
@@ -202,24 +202,24 @@ class CourseRecord(models.Model):
     homework_requirement = models.TextField(blank=True, null=True)
 
     def __str__(self):
-        return "%s 第%s天" % (self.course, self.day_num)
+        return "%s 第%s天" % (self.from_class, self.day_num)
 
     class Meta:
         verbose_name = '上课纪录'
         verbose_name_plural = "上课纪录"
-        unique_together = ('course', 'day_num')
+        unique_together = ('from_class', 'day_num')
 
 
 class StudyRecord(models.Model):
     """存储所有学员的详细的学习成绩,考勤情况"""
-    student = models.ForeignKey("Customer", verbose_name=u"学员", on_delete=models.CASCADE)
-    course_record = models.ForeignKey(CourseRecord, verbose_name=u"第几天课程", on_delete=models.CASCADE)
+    student = models.ForeignKey("Enrollment", verbose_name=u"学员", on_delete=models.CASCADE)
+    course_record = models.ForeignKey("CourseRecord", verbose_name=u"第几天课程", on_delete=models.CASCADE)
     record_choices = (('checked', u"已签到"),
                       ('late', u"迟到"),
                       ('noshow', u"缺勤"),
                       ('leave_early', u"早退"),
                       )
-    record = models.CharField(u"上课纪录", choices=record_choices,default="checked",max_length=64)
+    attendance = models.CharField(u"上课纪录", choices=record_choices, default="checked", max_length=64)
     score_choices = ((100, 'A+'),   (90, 'A'),
                      (85, 'B+'),     (80, 'B'),
                      (70, 'B-'),     (60, 'C+'),
@@ -232,7 +232,7 @@ class StudyRecord(models.Model):
     note = models.CharField(u"备注", max_length=255, blank=True, null=True)
 
     def __str__(self):
-        return u"%s,学员:%s,纪录:%s, 成绩:%s" % (self.course_record, self.student.name, self.record, self.get_score_display())
+        return u"%s,学员:%s,纪录:%s, 成绩:%s" % (self.student, self.course_record, self.score, self.get_score_display())
 
     class Meta:
         verbose_name = u'学员学习纪录'

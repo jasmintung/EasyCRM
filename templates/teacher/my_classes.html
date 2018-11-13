@@ -1,0 +1,50 @@
+{% extends 'teacher/teacher_main_pg.html' %}
+{% load common_define_tags %}
+{% block tb_area %}
+    <div class="panel">
+        <div class="panel-heading">
+            <h3 class="panel-title">我的班级</h3>
+        </div>
+        <div class="panel-body">
+            <div class="table-responsive">
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th>班级(学期)</th>
+                            <th>类型</th>
+                            <th>开课日期</th>
+                            <th>上课总节次</th>
+                            <th>已上课节次</th>
+                            <th>学生数量</th>
+                            <th>上课记录</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for class_obj in request.user.classlist_set.select_related %}
+                            <tr>
+                                <td><a href="#">{{ class_obj.course }}{{ class_obj.semester }}</a></td>
+                                <td>{{ class_obj.get_class_type_display }}</td>
+                                <td>{{ class_obj.start_date }}</td>
+                                <td>{{ class_obj.total_class_nums }}</td>
+                                <td>
+                                    {% if class_obj.class_type == 0 %}
+                                        {{ class_obj.courserecord_set.select_related.count }}
+                                    {% elif class_obj.class_type == 1 %}
+                                        N/A
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <a class="btn-link" href="{% url 'view_class_stu_list' class_obj.id %}">{{ class_obj.enrollment_set.select_related.count }}</a>
+                                </td>
+                                <td>
+{#                                    <a class="btn-link" href="{% get_course_record_url class_obj %}">上课记录...</a>#}
+                                    <a class="btn-link" href="/easycrmadmin/repository/courserecord/?from_class={{ class_obj.id }}">上课记录...</a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}

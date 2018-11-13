@@ -2,13 +2,27 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e2e6d406-85e4-4ccd-9b0c-410d13379b3e" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/forms/pay_form.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/teacher/easy_admin.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/teacher/class_stu_list.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/teacher/course_record_display.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/teacher/my_classes.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/teacher/teacher_main_pg.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/EasyCRM/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/EasyCRM/settings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/forms/stu_form.py" beforeDir="false" afterPath="$PROJECT_DIR$/forms/stu_form.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EasyCRM/templatetags/common_define_tags.py" beforeDir="false" afterPath="$PROJECT_DIR$/EasyCRM/templatetags/common_define_tags.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EasyCRM/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/EasyCRM/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/easycrmadmin/easycrm_admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/easycrmadmin/easycrm_admin.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/easycrmadmin/table_operate.py" beforeDir="false" afterPath="$PROJECT_DIR$/easycrmadmin/table_operate.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/easycrmadmin/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/easycrmadmin/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/market/easy_admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/market/easy_admin.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/market/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/market/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/repository/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/repository/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/teacher/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/teacher/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/teacher/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/teacher/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/HomeNavPage.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/HomeNavPage.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/admin/obj_list_table.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/admin/obj_list_table.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/market/market_enrollment.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/market/market_enrollment.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/market/stu_enrollment.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/market/stu_enrollment.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/teacher/tc_main_pg.html" beforeDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -53,49 +67,63 @@
     <session id="-454228547">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="13" />
+          <entry key="project.closed" value="14" />
           <entry key="project.open.time.1" value="5" />
-          <entry key="project.open.time.2" value="6" />
+          <entry key="project.open.time.2" value="8" />
           <entry key="project.open.time.20" value="1" />
           <entry key="project.open.time.3" value="1" />
-          <entry key="project.opened" value="13" />
+          <entry key="project.opened" value="15" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="Django Console" value="347" />
-          <entry key="cell" value="1" />
+          <entry key="Django Console" value="562" />
+          <entry key="cell" value="9" />
           <entry key="dummy" value="1" />
-          <entry key="html" value="9421" />
+          <entry key="html" value="11517" />
           <entry key="js" value="236" />
-          <entry key="py" value="25225" />
+          <entry key="py" value="32766" />
           <entry key="txt" value="7" />
           <entry key="说明" value="19" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="HTML" value="9421" />
+          <entry key="HTML" value="11517" />
           <entry key="JavaScript" value="236" />
           <entry key="PLAIN_TEXT" value="27" />
-          <entry key="Python" value="25572" />
-          <entry key="Scratch" value="1" />
+          <entry key="Python" value="33328" />
+          <entry key="Scratch" value="9" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
-          <entry key="auth_user" value="5" />
+          <entry key="auth_user" value="6" />
+          <entry key="auth_user_user_permissions" value="1" />
           <entry key="css" value="23" />
-          <entry key="html" value="101" />
+          <entry key="django_migrations" value="1" />
+          <entry key="django_session" value="1" />
+          <entry key="html" value="149" />
           <entry key="ini" value="1" />
           <entry key="jpg" value="6" />
           <entry key="js" value="11" />
           <entry key="png" value="4" />
-          <entry key="py" value="266" />
-          <entry key="repository_customer" value="3" />
-          <entry key="repository_enrollment" value="12" />
-          <entry key="repository_studyrecord" value="1" />
-          <entry key="repository_userprofile" value="6" />
+          <entry key="py" value="370" />
+          <entry key="repository_branch" value="1" />
+          <entry key="repository_classlist" value="2" />
+          <entry key="repository_classlist_teachers" value="2" />
+          <entry key="repository_course" value="2" />
+          <entry key="repository_courserecord" value="3" />
+          <entry key="repository_customer" value="8" />
+          <entry key="repository_customerfollowup" value="1" />
+          <entry key="repository_enrollment" value="17" />
+          <entry key="repository_menu" value="1" />
+          <entry key="repository_paymentrecord" value="1" />
+          <entry key="repository_role" value="2" />
+          <entry key="repository_role_menus" value="2" />
+          <entry key="repository_stuaccount" value="1" />
+          <entry key="repository_studyrecord" value="6" />
+          <entry key="repository_userprofile" value="11" />
           <entry key="sql" value="1" />
           <entry key="ts" value="1" />
           <entry key="下载" value="2" />
@@ -105,13 +133,13 @@
       <usages-collector id="statistics.file.types.open">
         <counts>
           <entry key="CSS" value="23" />
-          <entry key="Database Element" value="27" />
-          <entry key="HTML" value="101" />
+          <entry key="Database Element" value="69" />
+          <entry key="HTML" value="149" />
           <entry key="Image" value="10" />
           <entry key="Ini" value="1" />
           <entry key="JavaScript" value="11" />
           <entry key="PLAIN_TEXT" value="4" />
-          <entry key="Python" value="266" />
+          <entry key="Python" value="370" />
           <entry key="Scratch" value="1" />
           <entry key="TypeScript" value="1" />
         </counts>
@@ -121,48 +149,89 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/market/easy_admin.py">
+        <entry file="file://$PROJECT_DIR$/templates/teacher/class_stu_list.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="25">
-              <caret line="93" column="27" selection-start-line="93" selection-start-column="27" selection-end-line="93" selection-end-column="27" />
+            <state relative-caret-position="450">
+              <caret line="39" column="75" selection-start-line="39" selection-start-column="57" selection-end-line="39" selection-end-column="75" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/EasyCRM/templatetags/common_define_tags.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="807">
+              <caret line="298" lean-forward="true" selection-start-line="298" selection-end-line="298" />
               <folding>
-                <element signature="e#33#57#0" expanded="true" />
-                <marker date="1541729530896" expanded="true" signature="3118:3307" ph="..." />
-                <marker date="1541729530896" expanded="true" signature="3383:4135" ph="..." />
+                <element signature="e#17#44#0" expanded="true" />
+                <marker date="1542117702664" expanded="true" signature="315:320" ph="..." />
+                <marker date="1542117702664" expanded="true" signature="3598:3599" ph="..." />
+                <marker date="1542117702664" expanded="true" signature="3598:3603" ph="..." />
+                <marker date="1542117702664" expanded="true" signature="6502:6507" ph="..." />
+                <marker date="1542117702664" expanded="true" signature="7102:7107" ph="..." />
+                <marker date="1542117702664" expanded="true" signature="7246:7247" ph="..." />
+                <marker date="1542117702664" expanded="true" signature="7461:7466" ph="..." />
+                <marker date="1542117702664" expanded="true" signature="7729:7734" ph="..." />
+                <marker date="1542117702664" expanded="true" signature="9388:9393" ph="..." />
+                <marker date="1542117702664" expanded="true" signature="10059:10064" ph="..." />
+                <marker date="1542117702664" expanded="true" signature="10506:10511" ph="..." />
+                <marker date="1542117702664" expanded="true" signature="10915:10920" ph="..." />
+                <marker date="1542117702664" expanded="true" signature="11506:11511" ph="..." />
+                <marker date="1542117702664" expanded="true" signature="11776:11781" ph="..." />
+                <marker date="1542117702664" expanded="true" signature="11922:11927" ph="..." />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/repository/models.py">
+        <entry file="file://$PROJECT_DIR$/boss/urls.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="340">
-              <caret line="102" column="19" selection-start-line="102" selection-start-column="4" selection-end-line="102" selection-end-column="19" />
+            <state>
               <folding>
-                <element signature="e#117#160#0" expanded="true" />
-                <marker date="1541771181785" expanded="true" signature="12934:12969" ph="..." />
-                <marker date="1541771181785" expanded="true" signature="17095:17100" ph="..." />
+                <element signature="e#0#37#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/forms/pay_form.py">
+        <entry file="file://$PROJECT_DIR$/boss/views.py">
+          <provider selected="true" editor-type-id="text-editor" />
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/templates/market/market_enrollment.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="225">
-              <caret line="9" lean-forward="true" selection-start-line="9" selection-end-line="9" />
+            <state relative-caret-position="3350">
+              <caret line="134" column="38" lean-forward="true" selection-start-line="134" selection-start-column="38" selection-end-line="134" selection-end-column="38" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/EasyCRM/views.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="277">
+              <caret line="39" column="29" lean-forward="true" selection-start-line="39" selection-start-column="29" selection-end-line="39" selection-end-column="29" />
               <folding>
-                <element signature="e#0#34#0" expanded="true" />
-                <marker date="1541837958674" expanded="true" signature="127:128" ph="..." />
+                <element signature="e#0#54#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="das://5282d7e2-5983-4f92-a95f-80e03ff72406/schema/easycrm/table/repository_enrollment">
+        <entry file="file://$PROJECT_DIR$/templates/market/market_customers.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="100">
+              <caret line="4" lean-forward="true" selection-start-line="4" selection-end-line="4" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="das://5282d7e2-5983-4f92-a95f-80e03ff72406/schema/easycrm/table/repository_userprofile">
           <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
             <state>
               <filtering enabled="true" />
@@ -170,58 +239,20 @@
           </provider>
         </entry>
       </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/templates/market/market_main_pg.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="200">
+              <caret line="8" column="14" lean-forward="true" selection-start-line="8" selection-start-column="14" selection-end-line="8" selection-end-column="14" />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/market/views.py">
+        <entry file="file://$PROJECT_DIR$/templates/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="396">
-              <caret line="146" column="40" lean-forward="true" selection-start-line="146" selection-start-column="40" selection-end-line="146" selection-end-column="40" />
-              <folding>
-                <element signature="e#0#49#0" expanded="true" />
-                <marker date="1541839228523" expanded="true" signature="443:448" ph="..." />
-                <marker date="1541839228523" expanded="true" signature="650:655" ph="..." />
-                <marker date="1541839228523" expanded="true" signature="879:884" ph="..." />
-                <marker date="1541839228523" expanded="true" signature="1012:1017" ph="..." />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/forms/stu_form.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="150">
-              <caret line="6" column="15" lean-forward="true" selection-start-line="6" selection-start-column="15" selection-end-line="6" selection-end-column="15" />
-              <folding>
-                <element signature="e#0#34#0" expanded="true" />
-                <marker date="1541835389074" expanded="true" signature="138:328" ph="..." />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/EasyCRM/settings.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="721">
-              <caret line="149" selection-start-line="149" selection-end-line="149" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/templates/market/market_enrollment.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="275">
-              <caret line="133" column="30" lean-forward="true" selection-start-line="133" selection-start-column="30" selection-end-line="133" selection-end-column="30" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/templates/market/stu_enrollment.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="150">
-              <caret line="21" column="49" selection-start-line="21" selection-start-column="36" selection-end-line="21" selection-end-column="49" />
+            <state relative-caret-position="125">
+              <caret line="20" column="26" lean-forward="true" selection-start-line="20" selection-start-column="26" selection-end-line="20" selection-end-column="26" />
             </state>
           </provider>
         </entry>
@@ -233,30 +264,19 @@
       <list>
         <option value="CSS File" />
         <option value="JavaScript File" />
-        <option value="HTML File" />
         <option value="Python Script" />
+        <option value="HTML File" />
       </list>
     </option>
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>mark_safe</find>
-      <find>ugettext_lazy</find>
-      <find>customer</find>
-      <find>Role</find>
-      <find>led</find>
-      <find>menu_list</find>
-      <find>app_tables</find>
-      <find>UserProfile</find>
-      <find>TableHandler</find>
       <find>selectAll</find>
       <find>glyphicon glyphicon-plus</find>
       <find>country</find>
       <find>billing address</find>
       <find>add_forms</find>
       <find>edit</find>
-      <find>PrepareFormData</find>
-      <find>build_table_row</find>
       <find>FREE WIfi</find>
       <find>_blank</find>
       <find>defa</find>
@@ -264,9 +284,23 @@
       <find>Enroll</find>
       <find>Customer</find>
       <find>enroll</find>
-      <find>enrollment</find>
+      <find>customer</find>
+      <find>consultant</find>
+      <find>class</find>
       <find>classlist</find>
+      <find>CourseRecord</find>
+      <find>StudyRecord</find>
       <find>ClassList</find>
+      <find>load_admin_actions</find>
+      <find>PrepareFormData</find>
+      <find>build_table_row</find>
+      <find>table_add</find>
+      <find>Course</find>
+      <find>get_study_record_count</find>
+      <find>enrollment</find>
+      <find>get_course_score</find>
+      <find>get_course_grades</find>
+      <find>fetch_stu_course_score</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -275,22 +309,11 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/student/views.py" />
-        <option value="$PROJECT_DIR$/boss/views.py" />
-        <option value="$PROJECT_DIR$/templates/boss/boss_main_pg.html" />
-        <option value="$PROJECT_DIR$/templates/teacher/tc_main_pg.html" />
-        <option value="$PROJECT_DIR$/templates/student/student_main_pg.html" />
-        <option value="$PROJECT_DIR$/EasyCRM/templatetags.py" />
-        <option value="$PROJECT_DIR$/market/templatetags/market_define_tags.py" />
-        <option value="$PROJECT_DIR$/templates/admin/admin_base.html" />
-        <option value="$PROJECT_DIR$/easycrmadmin/easycrm_admin.py" />
-        <option value="$PROJECT_DIR$/easycrmadmin/templatetags/easyadmin_define_tags.py" />
         <option value="$PROJECT_DIR$/EasyCRM/app_config.py" />
         <option value="$PROJECT_DIR$/templates/admin/easy_admin.html" />
         <option value="$PROJECT_DIR$/templates/admin/model_obj_list.html" />
         <option value="$PROJECT_DIR$/forms/add_form.py" />
         <option value="$PROJECT_DIR$/forms/add_forms.py" />
-        <option value="$PROJECT_DIR$/templates/admin/obj_list_table.html" />
         <option value="$PROJECT_DIR$/templates/admin/admin_tb_add.html" />
         <option value="$PROJECT_DIR$/templates/admin/admin_tb_modify.html" />
         <option value="$PROJECT_DIR$/templates/admin/obj_delete_table.html" />
@@ -301,31 +324,42 @@
         <option value="$PROJECT_DIR$/templates/login.html" />
         <option value="$PROJECT_DIR$/templates/admin/admin_index.html" />
         <option value="$PROJECT_DIR$/EasyCRM/urls.py" />
-        <option value="$PROJECT_DIR$/templates/HomeNavPage.html" />
         <option value="$PROJECT_DIR$/repository/auth.py" />
         <option value="$PROJECT_DIR$/easycrmadmin/easy_admin.py" />
-        <option value="$PROJECT_DIR$/EasyCRM/views.py" />
-        <option value="$PROJECT_DIR$/templates/index.html" />
         <option value="$PROJECT_DIR$/templates/market/market_main_pg.html" />
         <option value="$PROJECT_DIR$/templates/market/market_customers.html" />
-        <option value="$PROJECT_DIR$/easycrmadmin/views.py" />
-        <option value="$PROJECT_DIR$/easycrmadmin/table_operate.py" />
         <option value="$PROJECT_DIR$/static/css/enroll-wizard.css" />
         <option value="$PROJECT_DIR$/static/js/enroll-wizard.js" />
         <option value="$PROJECT_DIR$/static/js/wizard/enroll-wizard.js" />
-        <option value="$PROJECT_DIR$/market/easy_admin.py" />
         <option value="$PROJECT_DIR$/forms/ad_forms.py" />
         <option value="$PROJECT_DIR$/market/urls.py" />
         <option value="$PROJECT_DIR$/templates/base.html" />
         <option value="$PROJECT_DIR$/easycrmadmin/admin.py" />
-        <option value="$PROJECT_DIR$/repository/models.py" />
-        <option value="$PROJECT_DIR$/EasyCRM/templatetags/common_define_tags.py" />
         <option value="$PROJECT_DIR$/EasyCRM/settings.py" />
         <option value="$PROJECT_DIR$/templates/market/stu_enrollment.html" />
         <option value="$PROJECT_DIR$/forms/stu_form.py" />
         <option value="$PROJECT_DIR$/forms/pay_form.py" />
         <option value="$PROJECT_DIR$/market/views.py" />
         <option value="$PROJECT_DIR$/templates/market/market_enrollment.html" />
+        <option value="$PROJECT_DIR$/templates/HomeNavPage.html" />
+        <option value="$PROJECT_DIR$/templates/teacher/tc_main_pg.html" />
+        <option value="$PROJECT_DIR$/templates/teacher/teacher_main_pg.html" />
+        <option value="$PROJECT_DIR$/templates/teacher/my_class.html" />
+        <option value="$PROJECT_DIR$/templates/index.html" />
+        <option value="$PROJECT_DIR$/market/easy_admin.py" />
+        <option value="$PROJECT_DIR$/easycrmadmin/easycrm_admin.py" />
+        <option value="$PROJECT_DIR$/easycrmadmin/table_operate.py" />
+        <option value="$PROJECT_DIR$/templates/admin/obj_list_table.html" />
+        <option value="$PROJECT_DIR$/easycrmadmin/views.py" />
+        <option value="$PROJECT_DIR$/templates/teacher/course_record_display.html" />
+        <option value="$PROJECT_DIR$/templates/teacher/my_classes.html" />
+        <option value="$PROJECT_DIR$/teacher/easy_admin.py" />
+        <option value="$PROJECT_DIR$/teacher/views.py" />
+        <option value="$PROJECT_DIR$/teacher/urls.py" />
+        <option value="$PROJECT_DIR$/repository/models.py" />
+        <option value="$PROJECT_DIR$/templates/teacher/class_stu_list.html" />
+        <option value="$PROJECT_DIR$/EasyCRM/templatetags/common_define_tags.py" />
+        <option value="$PROJECT_DIR$/EasyCRM/views.py" />
       </list>
     </option>
   </component>
@@ -335,7 +369,7 @@
     <detection-done>true</detection-done>
     <sorting>DEFINITION_ORDER</sorting>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
+  <component name="ProjectFrameBounds" extendedState="7">
     <option name="x" value="-4" />
     <option name="width" value="1925" />
     <option name="height" value="667" />
@@ -356,6 +390,11 @@
             <path>
               <item name="EasyCRM" type="b2602c69:ProjectViewProjectNode" />
               <item name="EasyCRM" type="462c0819:PsiDirectoryNode" />
+              <item name="boss" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="EasyCRM" type="b2602c69:ProjectViewProjectNode" />
+              <item name="EasyCRM" type="462c0819:PsiDirectoryNode" />
               <item name="EasyCRM" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -372,22 +411,6 @@
             <path>
               <item name="EasyCRM" type="b2602c69:ProjectViewProjectNode" />
               <item name="EasyCRM" type="462c0819:PsiDirectoryNode" />
-              <item name="enrolled_data" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="EasyCRM" type="b2602c69:ProjectViewProjectNode" />
-              <item name="EasyCRM" type="462c0819:PsiDirectoryNode" />
-              <item name="enrolled_data" type="462c0819:PsiDirectoryNode" />
-              <item name="25" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="EasyCRM" type="b2602c69:ProjectViewProjectNode" />
-              <item name="EasyCRM" type="462c0819:PsiDirectoryNode" />
-              <item name="forms" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="EasyCRM" type="b2602c69:ProjectViewProjectNode" />
-              <item name="EasyCRM" type="462c0819:PsiDirectoryNode" />
               <item name="market" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -398,25 +421,7 @@
             <path>
               <item name="EasyCRM" type="b2602c69:ProjectViewProjectNode" />
               <item name="EasyCRM" type="462c0819:PsiDirectoryNode" />
-              <item name="repository" type="462c0819:PsiDirectoryNode" />
-              <item name="migrations" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="EasyCRM" type="b2602c69:ProjectViewProjectNode" />
-              <item name="EasyCRM" type="462c0819:PsiDirectoryNode" />
-              <item name="static" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="EasyCRM" type="b2602c69:ProjectViewProjectNode" />
-              <item name="EasyCRM" type="462c0819:PsiDirectoryNode" />
-              <item name="static" type="462c0819:PsiDirectoryNode" />
-              <item name="css" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="EasyCRM" type="b2602c69:ProjectViewProjectNode" />
-              <item name="EasyCRM" type="462c0819:PsiDirectoryNode" />
-              <item name="static" type="462c0819:PsiDirectoryNode" />
-              <item name="js" type="462c0819:PsiDirectoryNode" />
+              <item name="teacher" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="EasyCRM" type="b2602c69:ProjectViewProjectNode" />
@@ -434,6 +439,12 @@
               <item name="EasyCRM" type="462c0819:PsiDirectoryNode" />
               <item name="templates" type="462c0819:PsiDirectoryNode" />
               <item name="market" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="EasyCRM" type="b2602c69:ProjectViewProjectNode" />
+              <item name="EasyCRM" type="462c0819:PsiDirectoryNode" />
+              <item name="templates" type="462c0819:PsiDirectoryNode" />
+              <item name="teacher" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -520,12 +531,12 @@
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.1433902" />
-      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.4993395" visible="true" weight="0.14072494" />
+      <window_info id="Structure" order="1" sideWeight="0.5006605" side_tool="true" weight="0.14072494" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49866667" weight="0.21715526" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.32899022" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49866667" visible="true" weight="0.29207385" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -534,14 +545,14 @@
       <window_info anchor="bottom" id="Version Control" order="8" show_stripe_button="false" />
       <window_info anchor="bottom" id="Database Changes" order="9" />
       <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.50133336" side_tool="true" weight="0.5408163" />
-      <window_info anchor="bottom" id="Terminal" order="11" weight="0.3583062" />
+      <window_info anchor="bottom" id="Terminal" order="11" weight="0.2931596" />
       <window_info anchor="bottom" id="Python Console" order="12" weight="0.26275787" />
       <window_info anchor="bottom" id="Database Console" order="13" weight="0.329718" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="right" id="SciView" order="3" />
-      <window_info anchor="right" id="Database" order="4" weight="0.32275712" />
+      <window_info anchor="right" id="Database" order="4" visible="true" weight="0.2249467" />
     </layout>
     <layout-to-restore>
       <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.09968017" />
@@ -575,199 +586,292 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/easycrmadmin/easycrm_admin.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret line="20" column="26" selection-start-line="20" selection-start-column="13" selection-end-line="20" selection-end-column="26" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/market/models.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="250">
-          <caret line="10" selection-start-line="10" selection-end-line="10" />
-          <folding>
-            <element signature="e#27#55#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/easycrmadmin/models.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3516">
-          <caret line="422" column="10" selection-start-line="422" selection-start-column="10" selection-end-line="422" selection-end-column="10" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/easycrmadmin/views.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-425">
-          <caret line="52" column="35" selection-start-line="52" selection-start-column="27" selection-end-line="52" selection-end-column="35" />
-          <folding>
-            <element signature="e#0#54#0" expanded="true" />
-            <marker date="1541659423775" expanded="true" signature="467:469" ph="..." />
-            <marker date="1541659423775" expanded="true" signature="506:511" ph="..." />
-            <marker date="1541659423775" expanded="true" signature="506:609" ph="..." />
-            <marker date="1541659423775" expanded="true" signature="751:756" ph="..." />
-            <marker date="1541659423775" expanded="true" signature="1015:1737" ph="..." />
-            <marker date="1541659423775" expanded="true" signature="1803:1808" ph="..." />
-            <marker date="1541659423775" expanded="true" signature="6586:6682" ph="..." />
-            <marker date="1541659423775" expanded="true" signature="8342:8347" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/login.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="287">
-          <caret line="34" column="12" lean-forward="true" selection-start-line="34" selection-start-column="12" selection-end-line="34" selection-end-column="12" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/static/css/wizard/enroll-wizard.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="100">
-          <caret line="4" lean-forward="true" selection-start-line="4" selection-end-line="4" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/static/css/stylesheet.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="450">
-          <caret line="18" column="68" selection-start-line="18" selection-start-column="68" selection-end-line="18" selection-end-column="68" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/static/css/wizard/bootstrap.min.css">
+    <entry file="file://$PROJECT_DIR$/market/admin.py">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/static/js/wizard/bootstrap.min.js">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/admin/obj_delete_table.html">
+    <entry file="file://$PROJECT_DIR$/EasyCRM/settings.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="350">
-          <caret line="29" column="18" selection-start-line="29" selection-start-column="18" selection-end-line="29" selection-end-column="18" />
+        <state relative-caret-position="-2254" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/EasyCRM/app_config.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="175">
+          <caret line="7" column="26" lean-forward="true" selection-start-line="7" selection-start-column="26" selection-end-line="7" selection-end-column="26" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/EasyCRM/urls.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="371">
+          <caret line="19" column="25" lean-forward="true" selection-start-line="19" selection-start-column="25" selection-end-line="19" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python37/Lib/site-packages/django/core/paginator.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-379">
+          <caret line="26" column="8" selection-start-line="26" selection-start-column="8" selection-end-line="26" selection-end-column="8" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/templates/admin/easy_admin.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="200">
-          <caret line="8" column="43" selection-start-line="8" selection-start-column="33" selection-end-line="8" selection-end-column="43" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/admin/admin_tb_modify.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="975">
-          <caret line="78" column="22" lean-forward="true" selection-start-line="78" selection-start-column="22" selection-end-line="78" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/admin/obj_list_table.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="450">
-          <caret line="60" column="60" lean-forward="true" selection-start-line="60" selection-start-column="60" selection-end-line="60" selection-end-column="60" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/static/js/jquery.cookie.js">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/static/js/wizard/enroll-wizard.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="325">
-          <caret line="13" lean-forward="true" selection-start-line="13" selection-end-line="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/admin/model_obj_list.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="100">
-          <caret line="4" column="14" selection-start-line="4" selection-start-column="14" selection-end-line="4" selection-end-column="14" />
+        <state relative-caret-position="75">
+          <caret line="3" column="19" lean-forward="true" selection-start-line="3" selection-start-column="19" selection-end-line="3" selection-end-column="19" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/templates/admin/admin_index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="675">
-          <caret line="27" column="14" lean-forward="true" selection-start-line="27" selection-start-column="14" selection-end-line="27" selection-end-column="14" />
+        <state relative-caret-position="21">
+          <caret line="10" column="18" lean-forward="true" selection-start-line="10" selection-start-column="18" selection-end-line="10" selection-end-column="18" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/market/market_main_pg.html">
+    <entry file="file://$PROJECT_DIR$/templates/admin/model_obj_list.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="200">
-          <caret line="8" column="14" lean-forward="true" selection-start-line="8" selection-start-column="14" selection-end-line="8" selection-end-column="14" />
+        <state relative-caret-position="50">
+          <caret line="2" column="19" lean-forward="true" selection-start-line="2" selection-start-column="19" selection-end-line="2" selection-end-column="19" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python37/Lib/site-packages/django/http/response.py">
+    <entry file="file://$PROJECT_DIR$/templates/HomeNavPage.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="298">
-          <caret line="287" column="8" selection-start-line="287" selection-start-column="8" selection-end-line="287" selection-end-column="8" />
+        <state relative-caret-position="475">
+          <caret line="52" column="55" selection-start-line="52" selection-start-column="37" selection-end-line="52" selection-end-column="55" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/EasyCRM/views.py">
+    <entry file="file://$PROJECT_DIR$/forms/pay_form.py">
       <provider selected="true" editor-type-id="text-editor">
         <state>
-          <caret line="18" column="36" lean-forward="true" selection-start-line="18" selection-start-column="36" selection-end-line="18" selection-end-column="36" />
-          <folding>
-            <element signature="e#0#54#0" expanded="true" />
-            <marker date="1541643674124" expanded="true" signature="2156:2161" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/static/js/holder.min.js">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/static/js/custom.js">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/forms/ad_forms.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2025">
-          <caret line="81" lean-forward="true" selection-start-line="81" selection-end-line="81" />
           <folding>
             <element signature="e#0#34#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/index.html">
+    <entry file="file://$PROJECT_DIR$/forms/stu_form.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="100">
-          <caret line="4" selection-start-line="4" selection-end-line="4" selection-end-column="16" />
+        <state>
+          <folding>
+            <element signature="e#0#34#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/admin/admin_tb_add.html">
+    <entry file="file://$PROJECT_DIR$/forms/ad_forms.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="275">
-          <caret line="11" column="36" lean-forward="true" selection-start-line="11" selection-start-column="36" selection-end-line="11" selection-end-column="36" />
+        <state relative-caret-position="771">
+          <caret line="62" lean-forward="true" selection-start-line="62" selection-end-line="62" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/EasyCRM/wsgi.py">
-      <provider selected="true" editor-type-id="text-editor" />
+    <entry file="file://$PROJECT_DIR$/templates/market/stu_enrollment.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="250">
+          <caret line="10" lean-forward="true" selection-start-line="10" selection-end-line="10" />
+        </state>
+      </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/market/urls.py">
+    <entry file="file://$PROJECT_DIR$/market/views.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="275">
-          <caret line="11" lean-forward="true" selection-start-line="11" selection-end-line="11" />
+          <caret line="29" column="67" lean-forward="true" selection-start-line="29" selection-start-column="67" selection-end-line="29" selection-end-column="67" />
+          <folding>
+            <element signature="e#0#49#0" expanded="true" />
+            <marker date="1541992515089" expanded="true" signature="443:448" ph="..." />
+            <marker date="1541992515089" expanded="true" signature="650:655" ph="..." />
+            <marker date="1541992515089" expanded="true" signature="879:884" ph="..." />
+            <marker date="1541992515089" expanded="true" signature="1012:1017" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/teacher/teacher_main_pg.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="225">
+          <caret line="9" lean-forward="true" selection-start-line="9" selection-end-line="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/admin/admin_tb_modify.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="225">
+          <caret line="9" lean-forward="true" selection-start-line="9" selection-end-line="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="das://5282d7e2-5983-4f92-a95f-80e03ff72406/schema/easycrm/table/repository_role">
+      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
+        <state>
+          <filtering enabled="true" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="das://5282d7e2-5983-4f92-a95f-80e03ff72406/schema/easycrm/table/repository_classlist_teachers">
+      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
+        <state>
+          <filtering enabled="true" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="das://5282d7e2-5983-4f92-a95f-80e03ff72406/schema/easycrm/table/repository_classlist">
+      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
+        <state>
+          <filtering enabled="true" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="das://5282d7e2-5983-4f92-a95f-80e03ff72406/schema/easycrm/table/repository_course">
+      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
+        <state>
+          <filtering enabled="true" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/admin/obj_list_table.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1050">
+          <caret line="60" column="26" lean-forward="true" selection-start-line="60" selection-start-column="26" selection-end-line="60" selection-end-column="26" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/easycrmadmin/urls.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="175">
+          <caret line="7" column="41" selection-start-line="7" selection-start-column="41" selection-end-line="7" selection-end-column="41" />
           <folding>
             <element signature="e#0#37#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python37/Lib/site-packages/django/forms/forms.py">
+    <entry file="file://$PROJECT_DIR$/easycrmadmin/table_operate.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="215">
-          <caret line="314" column="8" selection-start-line="314" selection-start-column="8" selection-end-line="314" selection-end-column="8" />
+        <state relative-caret-position="1775">
+          <caret line="71" selection-start-line="71" selection-end-line="71" />
+          <folding>
+            <element signature="e#0#33#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/boss/easycrm_admin.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/easycrmadmin/easy_admin.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="300">
+          <caret line="12" column="1" lean-forward="true" selection-start-line="12" selection-start-column="1" selection-end-line="12" selection-end-column="1" />
+          <folding>
+            <element signature="e#0#29#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/easycrmadmin/admin.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="550">
+          <caret line="22" lean-forward="true" selection-start-line="22" selection-end-line="22" />
+          <folding>
+            <element signature="e#0#32#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/market/easy_admin.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1050">
+          <caret line="119" lean-forward="true" selection-start-line="119" selection-end-line="119" />
+          <folding>
+            <marker date="1542078655191" expanded="true" signature="3394:4857" ph="..." />
+            <marker date="1542078655191" expanded="true" signature="4453:4522" ph="..." />
+            <marker date="1542078655191" expanded="true" signature="4644:4832" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/easycrmadmin/easycrm_admin.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="396">
+          <caret line="19" selection-start-line="19" selection-end-line="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/teacher/easy_admin.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="275">
+          <caret line="17" column="12" lean-forward="true" selection-start-line="17" selection-start-column="12" selection-end-line="17" selection-end-column="12" />
+          <folding>
+            <element signature="e#0#61#0" expanded="true" />
+            <marker date="1542107527906" expanded="true" signature="178:183" ph="..." />
+            <marker date="1542107527906" expanded="true" signature="1035:1040" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/easycrmadmin/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="426">
+          <caret line="106" column="33" selection-start-line="106" selection-start-column="33" selection-end-line="106" selection-end-column="33" />
+          <folding>
+            <element signature="e#0#54#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/teacher/my_classes.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="50">
+          <caret line="2" selection-start-line="2" selection-end-line="2" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/teacher/course_record_display.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="325">
+          <caret line="13" column="22" selection-start-line="13" selection-start-column="22" selection-end-line="13" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/teacher/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="308">
+          <caret line="15" column="23" selection-start-line="15" selection-start-column="4" selection-end-line="15" selection-end-column="23" />
+          <folding>
+            <element signature="e#0#49#0" expanded="true" />
+            <marker date="1542113951038" expanded="true" signature="435:436" ph="..." />
+            <marker date="1542113951038" expanded="true" signature="435:610" ph="..." />
+            <marker date="1542113951038" expanded="true" signature="435:626" ph="..." />
+            <marker date="1542113951038" expanded="true" signature="650:655" ph="..." />
+            <marker date="1542113951038" expanded="true" signature="787:792" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/teacher/urls.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="250">
+          <caret line="10" lean-forward="true" selection-start-line="10" selection-end-line="10" />
+          <folding>
+            <element signature="e#0#37#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="das://5282d7e2-5983-4f92-a95f-80e03ff72406/schema/easycrm/table/repository_role_menus">
+      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
+        <state>
+          <filtering enabled="true" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="das://5282d7e2-5983-4f92-a95f-80e03ff72406/schema/easycrm/table/repository_stuaccount">
+      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
+        <state>
+          <filtering enabled="true" />
         </state>
       </provider>
     </entry>
@@ -778,79 +882,19 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python37/Lib/site-packages/django/forms/models.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="215">
-          <caret line="468" column="59" selection-start-line="468" selection-start-column="41" selection-end-line="468" selection-end-column="59" />
+    <entry file="das://5282d7e2-5983-4f92-a95f-80e03ff72406/schema/easycrm/table/repository_studyrecord">
+      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
+        <state>
+          <filtering enabled="true" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/base.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="389">
-          <caret line="23" column="7" lean-forward="true" selection-start-line="23" selection-start-column="7" selection-end-line="23" selection-end-column="7" />
+    <entry file="das://5282d7e2-5983-4f92-a95f-80e03ff72406/schema/easycrm/table/repository_courserecord">
+      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
+        <state>
+          <filtering enabled="true" />
         </state>
       </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/easycrmadmin/admin.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="525">
-          <caret line="22" selection-start-line="22" selection-end-line="22" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/repository/admin.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/EasyCRM/templatetags/common_define_tags.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4550">
-          <caret line="183" column="29" selection-start-line="183" selection-start-column="29" selection-end-line="183" selection-end-column="29" />
-          <folding>
-            <element signature="e#17#44#0" expanded="true" />
-            <marker date="1541772223170" expanded="true" signature="253:258" ph="..." />
-            <marker date="1541772223170" expanded="true" signature="3439:3440" ph="..." />
-            <marker date="1541772223170" expanded="true" signature="3439:3444" ph="..." />
-            <marker date="1541772223170" expanded="true" signature="6343:6348" ph="..." />
-            <marker date="1541772223170" expanded="true" signature="6943:6948" ph="..." />
-            <marker date="1541772223170" expanded="true" signature="7087:7088" ph="..." />
-            <marker date="1541772223170" expanded="true" signature="7175:7180" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/enrolledData/desktop.ini">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/market/easy_admin.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="25">
-          <caret line="93" column="27" selection-start-line="93" selection-start-column="27" selection-end-line="93" selection-end-column="27" />
-          <folding>
-            <element signature="e#33#57#0" expanded="true" />
-            <marker date="1541729530896" expanded="true" signature="3118:3307" ph="..." />
-            <marker date="1541729530896" expanded="true" signature="3383:4135" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/enrolled_data/25/love.jpg">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/enrolled_data/25/talk.png">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/enrolled_data/25/timg.jpg">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/enrolled_data/25/表操作主界面.png">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/enrolled_data/25/风景1.jpg">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/enrolled_data/25/风景2.jpg">
-      <provider selected="true" editor-type-id="images" />
     </entry>
     <entry file="das://5282d7e2-5983-4f92-a95f-80e03ff72406/schema/easycrm/table/repository_enrollment">
       <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
@@ -861,42 +905,74 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/repository/models.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="340">
-          <caret line="102" column="19" selection-start-line="102" selection-start-column="4" selection-end-line="102" selection-end-column="19" />
+        <state relative-caret-position="251">
+          <caret line="214" column="43" selection-start-line="214" selection-start-column="33" selection-end-line="214" selection-end-column="43" />
           <folding>
             <element signature="e#117#160#0" expanded="true" />
-            <marker date="1541771181785" expanded="true" signature="12934:12969" ph="..." />
-            <marker date="1541771181785" expanded="true" signature="17095:17100" ph="..." />
+            <marker date="1542115551477" expanded="true" signature="12954:12989" ph="..." />
+            <marker date="1542115551477" expanded="true" signature="17115:17120" ph="..." />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/forms/pay_form.py">
+    <entry file="file://$PROJECT_DIR$/templates/teacher/class_stu_list.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="225">
-          <caret line="9" lean-forward="true" selection-start-line="9" selection-end-line="9" />
+        <state relative-caret-position="450">
+          <caret line="39" column="75" selection-start-line="39" selection-start-column="57" selection-end-line="39" selection-end-column="75" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/EasyCRM/templatetags/common_define_tags.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="807">
+          <caret line="298" lean-forward="true" selection-start-line="298" selection-end-line="298" />
           <folding>
-            <element signature="e#0#34#0" expanded="true" />
-            <marker date="1541837958674" expanded="true" signature="127:128" ph="..." />
+            <element signature="e#17#44#0" expanded="true" />
+            <marker date="1542117702664" expanded="true" signature="315:320" ph="..." />
+            <marker date="1542117702664" expanded="true" signature="3598:3599" ph="..." />
+            <marker date="1542117702664" expanded="true" signature="3598:3603" ph="..." />
+            <marker date="1542117702664" expanded="true" signature="6502:6507" ph="..." />
+            <marker date="1542117702664" expanded="true" signature="7102:7107" ph="..." />
+            <marker date="1542117702664" expanded="true" signature="7246:7247" ph="..." />
+            <marker date="1542117702664" expanded="true" signature="7461:7466" ph="..." />
+            <marker date="1542117702664" expanded="true" signature="7729:7734" ph="..." />
+            <marker date="1542117702664" expanded="true" signature="9388:9393" ph="..." />
+            <marker date="1542117702664" expanded="true" signature="10059:10064" ph="..." />
+            <marker date="1542117702664" expanded="true" signature="10506:10511" ph="..." />
+            <marker date="1542117702664" expanded="true" signature="10915:10920" ph="..." />
+            <marker date="1542117702664" expanded="true" signature="11506:11511" ph="..." />
+            <marker date="1542117702664" expanded="true" signature="11776:11781" ph="..." />
+            <marker date="1542117702664" expanded="true" signature="11922:11927" ph="..." />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/forms/stu_form.py">
+    <entry file="file://$PROJECT_DIR$/boss/urls.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="150">
-          <caret line="6" column="15" lean-forward="true" selection-start-line="6" selection-start-column="15" selection-end-line="6" selection-end-column="15" />
+        <state>
           <folding>
-            <element signature="e#0#34#0" expanded="true" />
-            <marker date="1541835389074" expanded="true" signature="138:328" ph="..." />
+            <element signature="e#0#37#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/market/stu_enrollment.html">
+    <entry file="file://$PROJECT_DIR$/boss/views.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="das://5282d7e2-5983-4f92-a95f-80e03ff72406/schema/easycrm/table/repository_userprofile">
+      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
+        <state>
+          <filtering enabled="true" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/EasyCRM/views.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="150">
-          <caret line="21" column="49" selection-start-line="21" selection-start-column="36" selection-end-line="21" selection-end-column="49" />
+        <state relative-caret-position="277">
+          <caret line="39" column="29" lean-forward="true" selection-start-line="39" selection-start-column="29" selection-end-line="39" selection-end-column="29" />
+          <folding>
+            <element signature="e#0#54#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -907,31 +983,24 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/EasyCRM/settings.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="721">
-          <caret line="149" selection-start-line="149" selection-end-line="149" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/templates/market/market_enrollment.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="275">
-          <caret line="133" column="30" lean-forward="true" selection-start-line="133" selection-start-column="30" selection-end-line="133" selection-end-column="30" />
+        <state relative-caret-position="3350">
+          <caret line="134" column="38" lean-forward="true" selection-start-line="134" selection-start-column="38" selection-end-line="134" selection-end-column="38" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/market/views.py">
+    <entry file="file://$PROJECT_DIR$/templates/market/market_main_pg.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="396">
-          <caret line="146" column="40" lean-forward="true" selection-start-line="146" selection-start-column="40" selection-end-line="146" selection-end-column="40" />
-          <folding>
-            <element signature="e#0#49#0" expanded="true" />
-            <marker date="1541839228523" expanded="true" signature="443:448" ph="..." />
-            <marker date="1541839228523" expanded="true" signature="650:655" ph="..." />
-            <marker date="1541839228523" expanded="true" signature="879:884" ph="..." />
-            <marker date="1541839228523" expanded="true" signature="1012:1017" ph="..." />
-          </folding>
+        <state relative-caret-position="200">
+          <caret line="8" column="14" lean-forward="true" selection-start-line="8" selection-start-column="14" selection-end-line="8" selection-end-column="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="125">
+          <caret line="20" column="26" lean-forward="true" selection-start-line="20" selection-start-column="26" selection-end-line="20" selection-end-column="26" />
         </state>
       </provider>
     </entry>

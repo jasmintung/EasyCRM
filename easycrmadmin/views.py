@@ -15,14 +15,14 @@ import json
 def main_pg(request):
     print('easyadmin boot page')
     # return HttpResponse('easyadmin')
-    print(site.enabled_funcs)
+    # print(site.enabled_funcs)
     return render(request, 'admin/easy_admin.html', {'enabled_apps': site.enabled_funcs})
 
 
 @login_required
 def app_tables(request, app_name):
     enabled_tb_cls = {app_name: site.enabled_funcs[app_name]}
-    print("t app_name:", app_name)
+    # print("t app_name:", app_name)
     return render(request, 'admin/easy_admin.html', {'enabled_apps': enabled_tb_cls, 'current_app': app_name})
 
 
@@ -52,7 +52,7 @@ def update_tb_rows(request, edit_datas, admin_class):
 @login_required
 def table_display(request, app_name, table_name, innercall=False):
     """
-    获取具体哪张表的数据
+    获取具体哪张表的数据,返回给前端展示
     :param request:
     :param app_name:
     :param table_name:
@@ -60,7 +60,7 @@ def table_display(request, app_name, table_name, innercall=False):
     """
     # 判断是不是注册过的APP
 
-    print("table_display")
+    # print("table_display")
     print("app name:", app_name)
     print("table name:", table_name)
     print(site.enabled_funcs)
@@ -70,25 +70,40 @@ def table_display(request, app_name, table_name, innercall=False):
         if table_name in site.enabled_funcs[app_name]:
             # print("table in here!")
             admin_class = site.enabled_funcs[app_name][table_name]
-            if request.method == "POST":
+            if request.method == "POST":  # 目前的POST情况有:1、修改数据2、action
                 # print("POST INFO:", request.POST)
                 edited_datas = request.POST.get("editable_data")
-                print(edited_datas)  # [{"source":"others","status":"signed","id":"1"},]
                 if edited_datas:
-                    edited_datas = json.loads(edited_datas)
-                    update_tb_rows(request, edited_datas, admin_class)
-                    # print(edited_datas)
-                    for index in edited_datas:
-                        print(index)  # {'source': 'others', 'status': 'signed', 'id': '1'}
-                    # 更新对应数据
+                    print(edited_datas)  # [{"source":"others","status":"signed","id":"1"},]
+                    if edited_datas:
+                        edited_datas = json.loads(edited_datas)
+                        update_tb_rows(request, edited_datas, admin_class)
+                        # print(edited_datas)
+                        for index in edited_datas:
+                            print(index)  # {'source': 'others', 'status': 'signed', 'id': '1'}
+                        # 更新对应数据
+                else:
+                    # action
+                    print("action op:", request.POST)
+                    selected_ids = request.POST.get("selected_ids")  # 要批量操作的数据
+                    action = request.POST.get("admin_action")  # action的方法名称
+                    if selected_ids:
+                        selected_ids = admin_class.model.objects.filter(id__in=selected_ids.split(','))
+                    else:
+                        raise KeyError("没有选中的对象")
+                    if hasattr(admin_class, action):
+                        action_func = getattr(admin_class, action)
+                        # print("action fun:", action_func)
+                        # print("selected_ids:", selected_ids)  # 要操作的对象些
+                        return action_func(admin_class, request, selected_ids)  # 调用admin_base中的方法
 
-            print(admin_class)  # 获取到对应model class的AdminClass, <class 'easycrmadmin.easy_admin.CustomerAdmin'>
-            print(admin_class.model)  # 获取到model class<class 'easycrmadmin.models.Customer'>
-            filter_queryset = table_operate.table_filter(request, admin_class, admin_class.model)
-            print("filter result:", filter_queryset)  # <QuerySet [<Customer: QQ:111231 -- Name:大野>, <Customer: QQ:412412412 -- Name:zhangtong>, <Customer: QQ:45613213165 -- Name:alex3714>]>
+            # print(admin_class)  # 获取到对应model class的AdminClass, <class 'easycrmadmin.easy_admin.CustomerAdmin'>
+            # print(admin_class.model)  # 获取到model class<class 'easycrmadmin.models.Customer'>
+            filter_queryset = table_operate.table_filter(request, admin_class)
+            # print("filter result:", filter_queryset)  # <QuerySet [<Customer: QQ:111231 -- Name:大野>, <Customer: QQ:412412412 -- Name:zhangtong>, <Customer: QQ:45613213165 -- Name:alex3714>]>
             search_queryset = table_operate.table_search(request, filter_queryset, admin_class)
             order_res = table_operate.table_orderby(request, search_queryset, admin_class)
-            print("order result:", order_res)
+            # print("order result:", order_res)
             # 分页处理,使用Django自带的分页类
             paginator = Paginator(order_res[0], admin_class.list_per_page)
             page = request.GET.get('page')
@@ -99,7 +114,7 @@ def table_display(request, app_name, table_name, innercall=False):
             except EmptyPage:
                 table_obj_list = paginator.get_page(paginator.num_pages)
 
-            table_obj = table_operate.TableHandler(request, admin_class.model, admin_class, table_obj_list, order_res)
+            table_obj = table_operate.TableHandler(request, admin_class, table_obj_list, order_res)
             return_data = {'table_obj': table_obj,
                            'app_name': app_name,
                            'paginator': paginator,

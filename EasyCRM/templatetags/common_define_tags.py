@@ -1,7 +1,8 @@
 # 自定义标签公共库,供前端回调
 from django import template
+from repository import models
 from django.utils.safestring import mark_safe
-
+from django.db.models import Sum
 register = template.Library()
 
 
@@ -26,20 +27,27 @@ def load_menus(request):
 
 
 @register.simple_tag
-def get_db_table_name(table_admin_class):
+def get_db_table_name(admin_class):
     """
     获取表名
     :param request:
-    :param classToModel: 跟表绑定关系的AdminClass,根据AdminClass可以获取对用model class的信息
+    :param admin_class: 跟表绑定关系的AdminClass,根据AdminClass可以获取对用model class的信息
     :return:
     """
     # print(dir(table_admin_class))
     # print(table_admin_class.model._meta.model_name)
     # print(table_admin_class.model._meta.verbose_name)
-    return table_admin_class.model._meta.verbose_name
+    return admin_class.model._meta.verbose_name
 
 
 def render_list_editable_column(table_obj, row_obj, field_obj):
+    """
+
+    :param table_obj:
+    :param row_obj: 行
+    :param field_obj: 列
+    :return:
+    """
     #print(table_obj,row_obj,field_obj,field_obj.name,field_obj.get_internal_type())
     # 判断现在这个字段是不是属于括号里的类型,不同类型需要分别处理
     if field_obj.get_internal_type() in ("CharField", "ForeignKey", "BigIntegerField", "IntegerField"):
@@ -56,7 +64,7 @@ def render_list_editable_column(table_obj, row_obj, field_obj):
         # print(field_obj.choices)
         # print(field_obj._check_choices)  # 判断哪个字段是choice属性
 
-        column_data = field_obj.value_from_object(row_obj)  # 通过行对象获取到对应列的值
+        column_data = field_obj.value_from_object(row_obj)  # 通过行列定位到对应列的值
         if not field_obj.choices and field_obj.get_internal_type() != "ForeignKey":
             column = '''<input data-tag='editable' type='text' name='%s' value='%s' >''' %\
                      (field_obj.name, field_obj.value_from_object(row_obj) or '')
@@ -65,7 +73,7 @@ def render_list_editable_column(table_obj, row_obj, field_obj):
             column = '''<select data-tag='editable' class='form-control'  name='%s' >''' % field_obj.name
 
             for option in field_obj.get_choices():
-                if option[0] == column_data:
+                if option[0] == column_data:  # 下拉框对应条目选中
                     selected_attr = "selected"
                 else:
                     selected_attr = ''
@@ -91,8 +99,8 @@ def render_list_editable_column(table_obj, row_obj, field_obj):
 def build_table_row(row_obj, table_obj):
     """
     组表数据
-    :param row_obj: 每一行数据的对象
-    :param table_obj: 哪张表的对象
+    :param row_obj: 每一条记录
+    :param table_obj: 哪张表
     :return: 生成html标签字符串形式给前端
     """
     row_ele = "<tr>"
@@ -101,7 +109,7 @@ def build_table_row(row_obj, table_obj):
         for index, column_name in enumerate(table_obj.list_display):
             column = ""
             # print(column_name)  # 列名,显示哪些信息
-            if hasattr(row_obj, column_name):  # 有没有这一列
+            if hasattr(row_obj, column_name):  # 这一条数据有没有这个属性
                 field_obj = row_obj._meta.get_field(column_name)
                 column_data = field_obj.value_from_object(row_obj)
                 # print(dir(field_obj))
@@ -182,5 +190,138 @@ def display_obj_related(objs):
 
 @register.simple_tag
 def get_contract(enroll_obj):
+    """
+    初始报名表信息,目前必须先加号合同模板,没有对无合同模板的情况做异常处理
+    :param enroll_obj:
+    :return:
+    """
+    print("获取报名人信息:", enroll_obj)
     return enroll_obj.course_grade.contract.template.format(customer_name=enroll_obj.customer.name,
                                                             course_name=enroll_obj.course_grade.course.name)
+
+
+@register.simple_tag
+def load_search_element(table_obj):
+    """
+    创建搜索框
+    :param table_obj:
+    :return:
+    """
+    print("load_search_element:", table_obj.request.GET)
+    print("table obj model class:", table_obj.model_class)
+    print(table_obj.search_fields)
+
+    if table_obj.search_fields:
+        already_exist_ars = ''
+        for k, v in table_obj.request.GET.items():
+            if k != 'q':
+                already_exist_ars += "<input type='hidden' name='%s' value='%s' >" % (k, v)
+        # print(table_obj.model_class._meta.get_field('qq').verbose_name)
+        # print(table_obj.model_class._meta.get_field('phone').verbose_name)
+        # print(map(lambda x: table_obj.model_class._meta.get_field(x).verbose_name, table_obj.search_fields))
+        placeholder = "请根据 %s 搜索" % ",".join(map(lambda x: table_obj.model_class._meta.get_field(x).verbose_name, table_obj.search_fields))
+        ele = """
+            <div class="searchbox">
+                   <form method="GET">
+                    <div class="input-group custom-search-form">
+                        <input type="text" name="q" value='%s' class="form-control col-lg-3" placeholder="%s">
+                        %s
+                        &nbsp
+                        <span class="input-group-btn">
+                            <button type="submit" class="btn btn-primary">搜索</button>
+                        </span>
+                    </div>
+               </form>
+           </div>
+            """ % (table_obj.request.GET.get('q') if table_obj.request.GET.get('q') else '',
+                   placeholder, already_exist_ars)
+        return mark_safe(ele)
+    return ''
+
+
+@register.simple_tag
+def load_admin_actions(table_obj):
+    select_ele = "<select id='admin_action' name='admin_action' class='form-control'><option value=''>----</option>"
+    for option in table_obj.actions:
+        action_display_name = option  # 批量操作中文显示
+        if hasattr(table_obj.admin_class, option):
+            action_func = getattr(table_obj.admin_class, option)
+            if hasattr(action_func, 'short_description'):  # 自定义一个中文注释
+                action_display_name = action_func.short_description
+        select_ele += ("<option value=%s>" % option) + action_display_name + "</option>"
+    select_ele += "</select>"
+    return mark_safe(select_ele)
+
+
+@register.simple_tag
+def get_course_record_url(class_obj):
+    # print("get_course_record_url:", class_obj)
+    # print(models.CourseRecord._meta.app_label)
+    # print(models.CourseRecord._meta.model_name)
+    # print(class_obj.id)
+    return "%s/%s/%s/" % (models.CourseRecord._meta.app_label, models.CourseRecord._meta.model_name, class_obj.id)
+    # return models.CourseRecord._meta.app_label, models.CourseRecord._meta.model_name, class_obj.id
+
+
+@register.simple_tag
+def get_course_grades(class_obj):
+    """
+    返回整个班的成绩
+    :param class_obj:
+    :return:
+    """
+    print("get_course_grades")
+    objs = None
+    try:
+        objs = models.StudyRecord.objects.filter(course_record__from_class=class_obj).values_list('student').annotate(Sum('score'))
+        print("cs_obj:", objs)
+    except Exception as e:
+        pass
+    return dict(objs)
+
+
+@register.simple_tag
+def get_course_ranking(class_grade_dic):
+    """
+    返回整个班的排名
+    :param class_grade_dic:
+    :return:
+    """
+    # print("排名前:", class_grade_dic)
+    ranking_dict = {}
+    # ranking_list = sorted(class_grade_dic.items(), key=lambda x: x[1], reverse=True)  # 降序
+    ranking_list = sorted(class_grade_dic.items(), key=lambda x: x[1])  # 默认是升序
+    reverse_rk_list = list(reversed(ranking_list))
+    for item in reverse_rk_list:
+        ranking_dict[item[0]] = [item[1], reverse_rk_list.index(item)+1]
+    # print(ranking_dict)
+    return ranking_dict
+
+
+@register.simple_tag
+def get_stu_grade_ranking(course_ranking_dic, enroll_obj):
+    """
+    返回这个学生在本班的成绩排名
+    :param course_ranking_dic:
+    :param enroll_obj:
+    :return:
+    """
+    score = course_ranking_dic.get(enroll_obj.id)
+    if score:
+        return score[1]
+
+
+@register.simple_tag
+def fetch_stu_course_score(class_grade_dic, enroll_obj):
+    return class_grade_dic.get(enroll_obj.id)
+
+
+@register.simple_tag
+def get_study_record_count(enroll_obj):
+    print("enroll_obj:", enroll_obj)
+    study_records = []
+    course_records = enroll_obj.course_grade.courserecord_set.select_related()  # 反查
+    for obj in course_records:
+        print(obj)
+        study_records.extend(obj.studyrecord_set.select_related().filter(student=enroll_obj))
+    return study_records
