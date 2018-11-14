@@ -31,9 +31,11 @@ def login(request):
                         Login(request, user)
                         # 这里加一个角色判断,然后跳转到对应的URL
                         print("ok")
-                        if request.GET.get("next").find("easycrmadmin"):
-                            # print("管理员路径")
+                        print(request.GET.get("next"))
+                        if request.GET.get("next") == "/easycrmadmin/":
+                            print("管理员路径")
                             if user.is_admin:
+                                print("是管理员")
                                 return redirect(request.GET.get("next"))
                             else:
                                 errors = "账户或密码错误"

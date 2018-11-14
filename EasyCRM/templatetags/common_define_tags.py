@@ -325,3 +325,20 @@ def get_study_record_count(enroll_obj):
         print(obj)
         study_records.extend(obj.studyrecord_set.select_related().filter(student=enroll_obj))
     return study_records
+
+
+@register.simple_tag
+def get_study_record(course_record, enroll_obj):
+    study_record_obj = course_record.studyrecord_set.select_related().filter(student=enroll_obj)
+    print("study_record_obj:", study_record_obj)
+    if study_record_obj:
+        return study_record_obj[0]
+
+
+@register.simple_tag
+def get_course_score(study_records):
+    # 目前课程的学分
+    score = 0
+    for index in study_records:
+        score += index.score
+    return score

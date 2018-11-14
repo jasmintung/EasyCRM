@@ -119,7 +119,7 @@ class Enrollment(models.Model):
 
 class CustomerFollowUp(models.Model):
     """存储客户的后续跟进信息"""
-    customer = models.ForeignKey(Customer, verbose_name=u"所咨询客户", on_delete=models.CASCADE)
+    customer = models.ForeignKey("Customer", verbose_name=u"所咨询客户", on_delete=models.CASCADE)
     note = models.TextField(u"跟进内容...")
     status_choices = ((1, u"近期无报名计划"),
                       (2, u"2个月内报名"),
@@ -334,7 +334,7 @@ class StuAccount(models.Model):
     valid_end = models.DateTimeField("账户有效期截止", blank=True, null=True)
 
     def __str__(self):
-        return self.account.customer.name
+        return self.account.name
 
     class Meta:
         verbose_name = "学员账户"

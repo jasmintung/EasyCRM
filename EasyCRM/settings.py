@@ -147,3 +147,5 @@ STATICFILES_DIRS = (
 
 AUTH_USER_MODEL = 'repository.UserProfile'  # 自定义用户验证配置需要
 ENROLLED_DATA = "%s%senrolled_data" % (BASE_DIR, os.sep)
+
+BASE_HOMEWORK_DIR = "%s%sdata%shomeworks%s" % (BASE_DIR, os.sep, os.sep, os.sep)  # 存作业的文件夹

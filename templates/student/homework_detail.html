@@ -1,0 +1,173 @@
+{% extends 'base.html' %}
+{% load common_define_tags %}
+{% block body %}
+<div class="col-lg-12 grid-margin stretch-card">
+    <title>作业详情</title>
+    <!-- Bootstrap core CSS -->
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="/static/css/form-validation.css" rel="stylesheet">
+
+    <div class="container">
+        <div class="py-5 text-center">
+            <h2>作业详情</h2>
+            <p class="lead">请根据提示完成</p>
+        </div>
+        <div class="row">
+            <div class="col-md-8 order-md-1">
+                <h4 class="mb-3">我的成绩:</h4>
+                <span>{{ study_record_obj.get_score_display }}</span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-8 order-md-1">
+                <h4 class="mb-3">作业题目</h4>
+                <p><b>{{ course_record_obj.homework_title }}</b></p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-8 order-md-1">
+                <h4 class="mb-3">作业需求</h4>
+                <p><pre>{{ course_record_obj.homework_requirement }}</pre></p>
+            </div>
+        </div>
+        <hr>
+
+        <p>已上传文件列表</p>
+        <table id="uploaded_filelist" class="table table-striped">
+            <thead>
+                <tr>
+                    <th>文件名</th>
+                    <th>大小(kb)</th>
+                    <th>上传时间</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for filename, fileinfo in uploaded_files.files.items %}
+                    <tr>
+                        <td>{{ filename }}</td>
+                        <td>{{ fileinfo.size }}</td>
+                        <td>{{ fileinfo.ctime }}</td>
+                        <td><i class="fa fa-times" aria-hidden="true" style="color: red;cursor: pointer" onclick="DeleteFileOnServer('{{ filename }}', this)">删除</i></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <form id="filedropzone" method="post" action="{{ request.path }}" class="dropzone dz-clickable" >
+            {% csrf_token %}
+            <div class="dz-default dz-message dz-preview">
+                <div class="dz-icon icon-wrap icon-circle icon-wrap-md">
+                    <i class="fa fa-cloud-upload fa-3x"></i>
+                </div>
+                <div>
+                    <p class="dz-text">请把作业放到这里(可拖放)</p>
+                    <p class="text-muted">请将代码及文档打包成.zip或rar格式</p>
+                </div>
+            </div>
+        </form>
+
+        </div>
+        <div class="form-group">
+            <footer class="my-5 pt-5 text-muted text-center text-small">
+                <p class="mb-1">© 2017-2018 Company Name</p>
+                <ul class="list-inline">
+                    <li class="list-inline-item"><a href="https://v4.bootcss.com/docs/4.0/examples/checkout/#">Privacy</a></li>
+                    <li class="list-inline-item"><a href="https://v4.bootcss.com/docs/4.0/examples/checkout/#">Terms</a></li>
+                    <li class="list-inline-item"><a href="https://v4.bootcss.com/docs/4.0/examples/checkout/#">Support</a></li>
+                </ul>
+            </footer>
+        </div>
+    </div>
+    {% block bottom-jsp %}
+        <script src="/static/js/jquery.min.js"></script>
+        <script src="/static/js/jquery.cookie.js"></script>
+        <script>
+            $(function () {
+                $.ajaxSetup({
+                    beforeSend: function(xhr,settings){
+                        xhr.setRequestHeader('X-CSRFtoken', $.cookie('csrftoken'));
+                    }
+                });
+            });
+            function DeleteFileOnServer(filename, ele) {
+                var kv = {};
+                kv['filename'] = filename;
+                {#console.log("before post:", kv);#}
+                $.ajax({
+                    url: "{{ request.path }}delete/",
+                    data: JSON.stringify(kv),
+                    type: "POST",
+                    dataType: "JSON",
+                    headers: {'X-CSRFtoken': $.cookie('csrftoken')},
+                    success: function (response) {
+                        console.log(response);
+                        if (response.msg) {
+                            $(ele).parent().parent().remove();
+                            //remove file from dropzone too if it exist
+                            $.each(myDropzone.files, function (index, file_obj) {
+                                console.log(file_obj.name + "--" + filename.trim());
+                                if (file_obj.name == filename.trim()) {
+                                    console.log("remove it from dropzone as well" + filename);
+                                    myDropzone.removeFile(file_obj);
+                                }
+                            });
+                        }
+                    },
+                    error: function () {
+
+                    }
+                });
+            }
+
+            function beforsubmit(ele) {
+                /*先简单处理*/
+                if (myDropzone.files.length < 2){
+                    alert("请至少上传2张图片");
+                    return false;
+                }
+            }
+            $(document).ready(function () {
+                Dropzone.options.myAwesomeDropzone = {
+                    paramName: "file",
+                    maxFilesize: 4, //MB
+                    maxFiles: 4,
+                    url: "{{ request.path }}",
+                    uploadMultiple: true,
+                    accept: function (file, done) {
+                        console.log("fasdfsdfsdf----->", file.name);
+                        if (!file.name.endsWith('.zip')){
+                            done("上传格式不正确")
+                        }else{
+                            done();
+                        }
+                    }
+                };
+
+                Dropzone.autoDiscover = false;
+                myDropzone = new Dropzone("#filedropzone");
+                myDropzone.on("addedfile", function (file) {
+                    console.log(file)
+                });
+                myDropzone.on("success", function (file, response) {
+                    console.log("pic upload success", response);
+                    var response_info = JSON.parse(response);
+                    if (response_info.error){
+
+                    }else{
+                        /*要通知后台把上传失败的文件删掉,假如它还在的话*/
+                        var eles = '';
+                        $.each(response_dic.files,function (k,v) {
+                            console.log(k +v );
+                            var onclick_attr = 'onclick="DeleteFileOnServer(' + "'" + k  + "',this)'";
+                            eles += "<tr><td>" + k +"</td><td>" + v.size + "</td><td>" + v.ctime +"</td><td><i style='color:red;cursor: pointer' class='fa fa-times' aria-hidden='true' onclick='DeleteFileOnServer(\" "+ k +" \",this)'></i></td></tr>";
+                        });//end each
+                        $("#uploaded-list tbody").html(eles);
+                    }
+                });
+            });
+        </script>
+    {% endblock %}
+</div>
+{% endblock %}
