@@ -18,6 +18,7 @@ from django.urls import path, re_path
 from django.conf.urls import include
 from EasyCRM import views
 from EasyCRM import views
+from django.views.decorators.cache import cache_page
 
 
 urlpatterns = [
@@ -29,5 +30,5 @@ urlpatterns = [
     path('student/', include('student.urls')),
     path('teacher/', include('teacher.urls')),
     path('boss/', include('boss.urls')),
-    path('', views.HomePageNavigation.as_view()),
+    path('', cache_page(60*60*24)(views.HomePageNavigation.as_view())),  # 主页一天刷新一次缓存
 ]

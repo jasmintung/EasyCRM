@@ -4,6 +4,7 @@ from django.contrib.auth import authenticate, login as Login, logout as Logout
 from repository import models
 from django.contrib.auth.hashers import check_password
 from django.contrib.auth.models import User, AbstractBaseUser
+from easycrmadmin import permission_control
 
 
 def login(request):
@@ -28,6 +29,7 @@ def login(request):
             if user:
                 if password == pwd:
                     if user.is_active:
+                        user.backend = 'django.contrib.auth.backends.ModelBackend'
                         Login(request, user)
                         # 这里加一个角色判断,然后跳转到对应的URL
                         print("ok")
@@ -40,6 +42,10 @@ def login(request):
                             else:
                                 errors = "账户或密码错误"
                         else:
+                            # 动态分配权限,保留功能,未开发
+                            # permission_control.init_permissions(user)
+                            # print("1after fenpei:", request.user.has_perm("p1"))
+                            # print("2after fenpei:", request.user.has_perm("repository.p5"))
                             return redirect(request.GET.get("next"))
                         # return redirect('/market')  # 测试登陆验证用
                     else:

@@ -26,10 +26,16 @@ SECRET_KEY = 'cl$mty=o@^f&5mn&x33mj-u)$51ed0ep2i%8x!@!9#s$0*2#u&'
 DEBUG = True
 
 ALLOWED_HOSTS = []
+# CACHES = {
+#     'default': {
+#         'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
+#         'LOCATION': 'c:/django/cache/bar',
+#     }
+# }
 CACHES = {
     'default': {
-        'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
-        'LOCATION': 'c:/django/cache/bar',
+        'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
+        'LOCATION': '127.0.0.1:11211',
     }
 }
 
@@ -42,6 +48,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'guardian',
     'repository',
     'boss',
     'easycrmadmin',
@@ -90,7 +97,7 @@ WSGI_APPLICATION = 'EasyCRM.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
-AUTHENTICATION_BACKENDS = ['django.contrib.auth.backends.ModelBackend']
+AUTHENTICATION_BACKENDS = ['django.contrib.auth.backends.ModelBackend', 'guardian.backends.ObjectPermissionBackend']
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',

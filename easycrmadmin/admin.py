@@ -1,6 +1,6 @@
 from django.contrib import admin
 from repository import models
-
+from easycrmadmin import models as as_models
 # Register your models here.
 print("easycrmadmin")  # 这里会在Django启动的时候执行
 
@@ -20,3 +20,6 @@ admin.site.register(models.Menu)
 admin.site.register(models.PaymentRecord)
 admin.site.register(models.CustomerFollowUp)
 admin.site.register(models.ContractTemplate)
+admin.site.register(as_models.TaskControl)
+admin.site.register(as_models.BasePermission)
+

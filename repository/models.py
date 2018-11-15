@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 # Create your models here.
 # ugettext_lazy() 将字符串作为惰性参照存储，而不是实际翻译。 翻译工作将在字符串在字符串上下文中被用到时进行，比如在Django管理页面提交模板时
 from django.db import models
+from easycrmadmin import models as ad_models
 from django import forms
 from django.utils.translation import ugettext_lazy as _
 from django.utils.safestring import mark_safe
@@ -241,7 +242,7 @@ class StudyRecord(models.Model):
         unique_together = ('course_record', 'student')
 
 
-class UserProfile(auth.AbstractBaseUser):  # 自定义验证
+class UserProfile(auth.AbstractBaseUser, auth.PermissionsMixin):  # 自定义验证
     # user = models.OneToOneField(User, on_delete=True)  # 使用Django自带的User表
     email = models.EmailField(
         verbose_name='email address',
@@ -266,7 +267,7 @@ class UserProfile(auth.AbstractBaseUser):  # 自定义验证
     roles = models.ManyToManyField('Role', blank=True)
     memo = models.TextField('备注', blank=True, null=True, default=None)
     date_joined = models.DateTimeField(blank=True, null=True, auto_now_add=True)
-
+    permissions = models.ManyToManyField(ad_models.TaskControl)
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['name']
 
@@ -281,7 +282,7 @@ class UserProfile(auth.AbstractBaseUser):  # 自定义验证
     def __str__(self):
         return self.email
 
-    def has_perm(self, perm, obj=None):
+    def has_perms(self, perm, obj=None):
         "Does the user have a specific permission?"
         # Simplest possible answer: Yes, always
         return True
@@ -307,23 +308,29 @@ class UserProfile(auth.AbstractBaseUser):  # 自定义验证
     objects = auth.UserProfileManager()
 
     @property
-    def is_staff(self):
+    def is_superuser(self):
+        """不加这个报错"""
         return self.is_admin
+
+    @property
+    def is_staff(self):
+        """不加这个报错"""
+        return self.is_active
 
     class Meta:
         verbose_name = 'CRM账户'
         verbose_name_plural = 'CRM账户'
 
-        # permissions = (
-        #     ('easyadmin_customers', '可以访问 客户库'),
-        #     ('easyadmin_table_list', '可以访问 easyadmin 每个表的数据列表页'),
-        #     ('easyadmin_table_index', '可以访问 easyadmin 首页'),
-        #     ('easyadmin_table_list_view', '可以访问 easyadmin 每个表中对象的修改页'),
-        #     ('easyadmin_table_list_change', '可以修改 easyadmin 每个表中对象'),
-        #     ('easyadmin_table_list_action', '可以操作 每个表的 action 功能'),
-        #     ('easyadmin_can_access_my_clients', '可以访问 自己的 客户列表'),
-        #
-        # )
+        # # 权限为什么这么写?因为格式就是这样的,这个权限其实最好改成动态添加,由于时间关系,暂时放着
+        permissions = (
+            ('easyadmin_customers', '可以访问 客户库'),
+            ('easyadmin_table_list', '可以访问 easyadmin 每个表的数据列表页'),
+            ('easyadmin_table_index', '可以访问 easyadmin 首页'),
+            ('easyadmin_table_list_view', '可以访问 easyadmin 每个表中对象的修改页'),
+            ('easyadmin_table_list_change', '可以修改 easyadmin 每个表中对象'),
+            ('easyadmin_table_list_action', '可以操作 每个表的 action 功能'),
+            ('easyadmin_can_access_my_clients', '可以访问 自己的 客户列表'),
+        )
 
 
 class StuAccount(models.Model):

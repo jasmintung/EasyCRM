@@ -1,7 +1,8 @@
 # from django.contrib.auth.models import User
 # # Create your models here.
 # # ugettext_lazy() 将字符串作为惰性参照存储，而不是实际翻译。 翻译工作将在字符串在字符串上下文中被用到时进行，比如在Django管理页面提交模板时
-# from django.db import models
+from django.db import models
+from repository import models as r_md
 # from django import forms
 # from django.utils.translation import ugettext_lazy as _
 # from django.utils.safestring import mark_safe
@@ -433,3 +434,36 @@
 #     class Meta:
 #         verbose_name = '缴费纪录'
 #         verbose_name_plural = "缴费纪录"
+
+
+class TaskControl(models.Model):
+    """权限制定类"""
+    permission_name = models.CharField(max_length=128)
+    choice_type = (
+        ('1', 'name'),
+        ('2', 'url'),
+    )
+    permission_type = models.CharField(choices=choice_type, default='1', max_length=32)
+    # class Meta:  # 如何添加不是数据库字段的属性呢？meta 类是这些非字段属性的容器
+    #     permissions = (('repository_customers', '可浏览客户信息'),
+    #                    ('repository_easy_admin_main_pg', '可访问APP和表主页'),
+    #                    ('repository_app_tables', '指定APP下所有的表信息'),
+    #                    ('repository_table_view', '查看指定表的信息'),
+    #                    ('repository_table_modify', '修改指定表的信息'),
+    #                    ('repository_table_action', '表的action功能'),)
+
+    def __str__(self):
+        return self.permission_name
+
+    class Meta:
+        verbose_name = "权限配置表"
+        verbose_name_plural = "权限配置表"
+
+
+class BasePermission(models.Model):
+    class Meta:
+        verbose_name = "动态权限存储类"
+        verbose_name_plural = "动态权限存储类"
+        permissions = (
+            ('view_task', 'View task'),
+        )
