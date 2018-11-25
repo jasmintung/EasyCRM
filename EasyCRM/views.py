@@ -19,39 +19,35 @@ def login(request):
         password = request.POST.get('password')
         print("password:", password)
 
-        # user = authenticate(username=username, password=password)  # 目前的Django版本无法明文比较了,这个方法不能用,超级账户除外
-        # print("uiser:", user)
+
         try:
-            user = models.UserProfile.objects.get(name=username)
-            print("user", user)
-            pwd = user.password
-            print("pwd:", pwd)
-            if user:
-                if password == pwd:
-                    if user.is_active:
-                        user.backend = 'django.contrib.auth.backends.ModelBackend'
-                        Login(request, user)
-                        # 这里加一个角色判断,然后跳转到对应的URL
-                        print("ok")
-                        print(request.GET.get("next"))
-                        if request.GET.get("next") == "/easycrmadmin/":
-                            print("管理员路径")
-                            if user.is_admin:
-                                print("是管理员")
-                                return redirect(request.GET.get("next"))
-                            else:
-                                errors = "账户或密码错误"
-                        else:
-                            # 动态分配权限,保留功能,未开发
-                            # permission_control.init_permissions(user)
-                            # print("1after fenpei:", request.user.has_perm("p1"))
-                            # print("2after fenpei:", request.user.has_perm("repository.p5"))
+            users = authenticate(username=username, password=password)
+            print("uiser:", users)
+            if users:
+                if users.is_active:
+                    users.backend = 'django.contrib.auth.backends.ModelBackend'
+                    Login(request, users)
+                    # 这里加一个角色判断,然后跳转到对应的URL
+                    print("ok")
+                    print(request.GET.get("next"))
+                    if request.GET.get("next") == "/easycrmadmin/":
+                        print("管理员路径")
+                        if users.is_admin:
+                            print("是管理员")
                             return redirect(request.GET.get("next"))
-                        # return redirect('/market')  # 测试登陆验证用
+                        else:
+                            errors = "账户或密码错误"
                     else:
-                        errors = "账户未激活"
+                        # 动态分配权限,保留功能,未开发
+                        role = request.GET.get("next")
+                        print("user obj:", id(request.user), id(users))  # 是同一个引用,所以随便传哪个都行,很好!!
+                        permission_control.init_permissions(users, role.strip('/'))
+                        # print("1after fenpei:", request.user.has_perm("p1"))
+                        # print("2after fenpei:", request.user.has_perm("repository.p5"))
+                        return redirect(request.GET.get("next"))
+                    # return redirect('/market')  # 测试登陆验证用
                 else:
-                    errors = "密码错误"
+                    errors = "账户未激活"
             else:
                 errors = "账户名或密码错误"
         except models.UserProfile.DoesNotExist as ex:
@@ -66,7 +62,7 @@ def login(request):
 def logout(request):
     Logout(request)
     print("logout.....")
-    return redirect(reverse('mlogin'))
+    return redirect('/')
 
 
 def get_user(self, user_id):

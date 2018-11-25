@@ -381,38 +381,6 @@ from repository import models as r_md
 #         verbose_name = "前端菜单"
 #         verbose_name_plural = "前端菜单"
 #
-# # class FirstLayerMenu(models.Model):
-# #     """第一层侧边栏菜单"""
-# #     name = models.CharField('菜单名', max_length=64)
-# #     url_type_choices = ((0, 'related_name'), (1, 'absolute_url'))
-# #     url_type = models.SmallIntegerField(choices=url_type_choices, default=0)
-# #     url_name = models.CharField(max_length=64, unique=True)
-# #     order = models.SmallIntegerField(default=0, verbose_name=u'菜单排序')
-# #     sub_menus = models.ManyToManyField('SubMenu', blank=True)
-# #
-# #     def __str__(self):
-# #         return self.name
-# #
-# #     class Meta:
-# #         verbose_name = "第一层菜单"
-# #         verbose_name_plural = "第一层菜单"
-# #
-# #
-# # class SubMenu(models.Model):
-# #     """第二层侧边栏菜单"""
-# #
-# #     name = models.CharField('二层菜单名', max_length=64)
-# #     url_type_choices = ((0, 'related_name'), (1, 'absolute_url'))
-# #     url_type = models.SmallIntegerField(choices=url_type_choices, default=0)
-# #     url_name = models.CharField(max_length=64, unique=True)
-# #     order = models.SmallIntegerField(default=0, verbose_name='菜单排序')
-# #
-# #     def __str__(self):
-# #         return self.name
-# #
-# #     class Meta:
-# #         verbose_name = "第二层菜单"
-# #         verbose_name_plural = "第二层菜单"
 #
 #
 # class PaymentRecord(models.Model):

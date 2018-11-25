@@ -9,10 +9,12 @@ from django.core.cache import cache
 import json
 import os
 from EasyCRM.settings import ENROLLED_DATA
+from easycrmadmin import permission_control
 # Create your views here.
 
 
 @login_required
+@permission_control.check_permission
 def main_pg(request):
     print('market')
     return render(request, 'market/market_main_pg.html')

@@ -245,14 +245,14 @@ class StudyRecord(models.Model):
 class UserProfile(auth.AbstractBaseUser, auth.PermissionsMixin):  # 自定义验证
     # user = models.OneToOneField(User, on_delete=True)  # 使用Django自带的User表
     email = models.EmailField(
-        verbose_name='email address',
+        verbose_name='邮箱地址',
         max_length=255,
         unique=True,
     )
     # password = models.CharField(_('password'), max_length=128,
     #                             help_text=mark_safe('''<a class='btn-link' href='password'>重置密码</a>'''))
     password = models.CharField('password', max_length=128,
-                                help_text=mark_safe('''<a class='btn-link' href='password'>重置密码</a>'''))
+                                help_text=mark_safe('''<a class='btn-link' href='password'>重置密码</a>'''),)
 
     is_active = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False)
@@ -268,22 +268,22 @@ class UserProfile(auth.AbstractBaseUser, auth.PermissionsMixin):  # 自定义验
     memo = models.TextField('备注', blank=True, null=True, default=None)
     date_joined = models.DateTimeField(blank=True, null=True, auto_now_add=True)
     permissions = models.ManyToManyField(ad_models.TaskControl)
-    USERNAME_FIELD = 'email'
+    USERNAME_FIELD = 'email'  # 唯一标识
     REQUIRED_FIELDS = ['name']
 
-    # def get_full_name(self):
-    #     # The user is identified by their email address
-    #     return self.email
-    #
-    # def get_short_name(self):
-    #     # The user is identified by their email address
-    #     return self.email
-    #
+    def get_full_name(self):
+        # The user is identified by their email address
+        return self.email
+
+    def get_short_name(self):
+        # The user is identified by their email address
+        return self.email
+
     def __str__(self):
         return self.email
 
     def has_perms(self, perm, obj=None):
-        "Does the user have a specific permission?"
+        "Does the user have a specific permission?对哪些表"
         # Simplest possible answer: Yes, always
         return True
 
@@ -305,7 +305,7 @@ class UserProfile(auth.AbstractBaseUser, auth.PermissionsMixin):  # 自定义验
     #
     #
 
-    objects = auth.UserProfileManager()
+    objects = auth.UserProfileManager()  # 创建用户
 
     @property
     def is_superuser(self):
@@ -322,15 +322,15 @@ class UserProfile(auth.AbstractBaseUser, auth.PermissionsMixin):  # 自定义验
         verbose_name_plural = 'CRM账户'
 
         # # 权限为什么这么写?因为格式就是这样的,这个权限其实最好改成动态添加,由于时间关系,暂时放着
-        permissions = (
-            ('easyadmin_customers', '可以访问 客户库'),
-            ('easyadmin_table_list', '可以访问 easyadmin 每个表的数据列表页'),
-            ('easyadmin_table_index', '可以访问 easyadmin 首页'),
-            ('easyadmin_table_list_view', '可以访问 easyadmin 每个表中对象的修改页'),
-            ('easyadmin_table_list_change', '可以修改 easyadmin 每个表中对象'),
-            ('easyadmin_table_list_action', '可以操作 每个表的 action 功能'),
-            ('easyadmin_can_access_my_clients', '可以访问 自己的 客户列表'),
-        )
+        # permissions = (
+        #     ('easyadmin_customers', '可以访问 客户库'),
+        #     ('easyadmin_table_list', '可以访问 easyadmin 每个表的数据列表页'),
+        #     ('easyadmin_table_index', '可以访问 easyadmin 首页'),
+        #     ('easyadmin_table_list_view', '可以访问 easyadmin 每个表中对象的修改页'),
+        #     ('easyadmin_table_list_change', '可以修改 easyadmin 每个表中对象'),
+        #     ('easyadmin_table_list_action', '可以操作 每个表的 action 功能'),
+        #     ('easyadmin_can_access_my_clients', '可以访问 自己的 客户列表'),
+        # )
 
 
 class StuAccount(models.Model):
@@ -391,39 +391,6 @@ class Menu(models.Model):
         verbose_name = "前端菜单"
         verbose_name_plural = "前端菜单"
 
-# class FirstLayerMenu(models.Model):
-#     """第一层侧边栏菜单"""
-#     name = models.CharField('菜单名', max_length=64)
-#     url_type_choices = ((0, 'related_name'), (1, 'absolute_url'))
-#     url_type = models.SmallIntegerField(choices=url_type_choices, default=0)
-#     url_name = models.CharField(max_length=64, unique=True)
-#     order = models.SmallIntegerField(default=0, verbose_name=u'菜单排序')
-#     sub_menus = models.ManyToManyField('SubMenu', blank=True)
-#
-#     def __str__(self):
-#         return self.name
-#
-#     class Meta:
-#         verbose_name = "第一层菜单"
-#         verbose_name_plural = "第一层菜单"
-#
-#
-# class SubMenu(models.Model):
-#     """第二层侧边栏菜单"""
-#
-#     name = models.CharField('二层菜单名', max_length=64)
-#     url_type_choices = ((0, 'related_name'), (1, 'absolute_url'))
-#     url_type = models.SmallIntegerField(choices=url_type_choices, default=0)
-#     url_name = models.CharField(max_length=64, unique=True)
-#     order = models.SmallIntegerField(default=0, verbose_name='菜单排序')
-#
-#     def __str__(self):
-#         return self.name
-#
-#     class Meta:
-#         verbose_name = "第二层菜单"
-#         verbose_name_plural = "第二层菜单"
-
 
 class PaymentRecord(models.Model):
     """缴费记录"""
@@ -457,3 +424,79 @@ class ContractTemplate(models.Model):
     class Meta:
         verbose_name = "合同模板"
         verbose_name_plural = "合同模板"
+
+
+class AdminPermission(models.Model):
+    """
+    管理员权限表
+    """
+    summary = models.CharField(max_length=32)
+    content = models.TextField()
+    # reported_by = models.ManyToManyField(UserProfile)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        permissions = (
+            ('easy_admin_main_pg', '可以访问管理员主页'),
+            ('app_tables', '可以查看所有APP'),
+            ('this_table', '可以查看具体表'),
+            ('table_add', '可以添加表'),
+            ('table_modify', '可以修改表'),
+            ('table_delete', '可以删除表'),
+        )
+
+
+class TeacherPermission(models.Model):
+    """
+    讲师权限表
+    """
+    summary = models.CharField(max_length=32)
+    content = models.TextField()
+    # reported_by = models.ManyToManyField(UserProfile)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        permissions = (
+            ('teacher_main_pg', '可以访问讲师主页'),
+            ('my_classes', '可以访问我的班级'),
+            ('course_record', '可以访问上课记录'),
+            ('view_class_stu_list', '可以访问学员列表'),
+        )
+
+
+class SalesPermission(models.Model):
+    """
+    销售权限表
+    """
+    summary = models.CharField(max_length=32)
+    content = models.TextField()
+    # reported_by = models.ManyToManyField(UserProfile)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        permissions = (
+            ('market_main_pg', '可以访问销售主页'),
+            ('customers', '可以访问客户信息'),
+            ('customer_modify', '可以修改客户信息'),
+            ('enrollment', '可以访问帮助学员报名主页'),
+            ('stu_enrollment', '可以查看学员报名表单模板'),
+        )
+
+
+class StudentPermission(models.Model):
+    """
+    销售权限表
+    """
+    summary = models.CharField(max_length=32)
+    content = models.TextField()
+    # reported_by = models.ManyToManyField(UserProfile)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        permissions = (
+            ('my_courses', '可以查看我的课程'),
+            ('my_grade', '可以查看我的班级'),
+            ('homework_detail', '可以查看作业信息'),
+            ('delete_file', '可以删除作业'),
+            ('my_homeworks', '可以提交作业'),
+        )
