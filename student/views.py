@@ -2,11 +2,13 @@ from django.shortcuts import render, HttpResponse
 from django.contrib.auth.decorators import login_required
 from repository import models
 from EasyCRM import settings
+from easycrmadmin import permission_control
 import os, time, json
 # Create your views here.
 
 
 @login_required
+@permission_control.check_permission
 def my_courses(request):
     """
     学员的课程列表
@@ -23,12 +25,14 @@ def my_courses(request):
 
 
 @login_required
+@permission_control.check_permission
 def my_homeworks(request, eid):
     obj = models.Enrollment.objects.get(id=eid)
     return render(request, 'student/homeworks.html', {'enroll_obj': obj})
 
 
 @login_required
+@permission_control.check_permission
 def my_grade(reqeust):
     pass
 
@@ -41,6 +45,7 @@ def get_uploaded_fileinfo(file_dic, upload_dir):
 
 
 @login_required
+@permission_control.check_permission
 def my_homework_detail(request, eid, cid):
     """
     最后一点了,想想这里面这么写:
@@ -100,6 +105,7 @@ def my_homework_detail(request, eid, cid):
 
 
 @login_required
+@permission_control.check_permission
 def delete_file(request, eid, cid):
     """
     前端主动删除上传照片

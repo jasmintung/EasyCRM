@@ -8,10 +8,12 @@ from easycrmadmin import table_operate
 from forms import ad_forms
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
+from easycrmadmin import permission_control
 import json
 
 
 @login_required
+@permission_control.check_permission
 def main_pg(request):
     print('easyadmin boot page')
     # return HttpResponse('easyadmin')
@@ -20,6 +22,7 @@ def main_pg(request):
 
 
 @login_required
+@permission_control.check_permission
 def app_tables(request, app_name):
     enabled_tb_cls = {app_name: site.enabled_funcs[app_name]}
     # print("t app_name:", app_name)
@@ -50,6 +53,7 @@ def update_tb_rows(request, edit_datas, admin_class):
 
 
 @login_required
+@permission_control.check_permission
 def table_display(request, app_name, table_name, innercall=False):
     """
     获取具体哪张表的数据,返回给前端展示
@@ -129,6 +133,7 @@ def table_display(request, app_name, table_name, innercall=False):
 
 
 @login_required
+@permission_control.check_permission
 def table_modify(request, app_name, table_name, obj_nid):
     print(app_name, table_name, obj_nid)
     if app_name in site.enabled_funcs:
@@ -161,6 +166,7 @@ def table_modify(request, app_name, table_name, obj_nid):
 
 
 @login_required
+@permission_control.check_permission
 def table_add(request, app_name, model_name):
     """
     表格添加
@@ -207,6 +213,7 @@ def table_add(request, app_name, model_name):
 
 
 @login_required
+@permission_control.check_permission
 def table_delete(request, app_name, model_name, nid):
     """
     删除信息

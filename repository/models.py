@@ -267,7 +267,6 @@ class UserProfile(auth.AbstractBaseUser, auth.PermissionsMixin):  # 自定义验
     roles = models.ManyToManyField('Role', blank=True)
     memo = models.TextField('备注', blank=True, null=True, default=None)
     date_joined = models.DateTimeField(blank=True, null=True, auto_now_add=True)
-    permissions = models.ManyToManyField(ad_models.TaskControl)
     USERNAME_FIELD = 'email'  # 唯一标识
     REQUIRED_FIELDS = ['name']
 

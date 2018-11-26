@@ -4,6 +4,7 @@
 # 动态授权,既每个用户登陆验证通过后,使用django-guardian这个第三方库来完善这个权限
 # -*- coding:utf-8 -*-
 from repository import models
+from django.http import Http404
 from django.contrib.auth.models import Group
 from guardian.shortcuts import assign_perm
 # assign_perm('xxx', 'usr_obj', task)  # xxx表示TaskControl中Meta下的Permissions中的权限集合
@@ -11,6 +12,8 @@ from guardian.shortcuts import assign_perm
 # Meta Permission元祖
 # 注意要在settings中INSTALL_APP中添加'guardian'
 from guardian.shortcuts import assign_perm
+from guardian.shortcuts import remove_perm
+from guardian.shortcuts import get_perms
 
 
 # def __new__(cls, *args, **kwargs):
@@ -22,6 +25,8 @@ from guardian.shortcuts import assign_perm
 #         permissions: (
 #             ('p1', '2'), ('p2', '4')
 #         )
+# class PermissionAdmin(object):
+#     def __init__(self, user_obj, ):
 
 
 def init_permissions(u_obj, role):
@@ -32,81 +37,110 @@ def init_permissions(u_obj, role):
     :return:
     """
     print("init_permission:", role)
-    if role == "market":
-        sale_gp = Group.objects.get(name='销售组')
-        print("sale_gp:", sale_gp)
-        pm = models.SalesPermission.objects.first()  # 获取权限对象
-        print("pm:", pm)
-        # print(dir(pm))
-        print("-----------------------")
-        print(u_obj.has_perm('market_main_pg', pm))
-        if not u_obj.has_perm('market_main_pa', pm):
-            assign_perm('market_main_pg', sale_gp, pm)
-        if not u_obj.has_perm('customers', pm):
-            assign_perm('customers', sale_gp, pm)
-        if not u_obj.has_perm('customer_modify', pm):
-            assign_perm('customer_modify', sale_gp, pm)
-        if not u_obj.has_perm('enrollment', pm):
-            assign_perm('enrollment', sale_gp, pm)
-        if not u_obj.has_perm('stu_enrollment', pm):
-            assign_perm('stu_enrollment', sale_gp, pm)
-        u_obj.groups.add(sale_gp)
-    elif role == "teacher":
-        tc_gp = Group.objects.get(name='讲师组')
-        print("tc_gp:", tc_gp)
-        pm = models.TeacherPermission.objects.first()  # 获取权限对象
-        print("pm:", pm)
-        # print(dir(pm))
-        print("-----------------------")
-        if not u_obj.has_perm('teacher_main_pg', pm):
-            assign_perm('teacher_main_pg', tc_gp, pm)
-        if not u_obj.has_perm('my_classes', pm):
-            assign_perm('my_classes', tc_gp, pm)
-        if not u_obj.has_perm('course_record', pm):
-            assign_perm('course_record', tc_gp, pm)
-        if not u_obj.has_perm('view_class_stu_list', pm):
-            assign_perm('view_class_stu_list', tc_gp, pm)
-        u_obj.groups.add(tc_gp)
-    elif role == "student":
-        st_gp = Group.objects.get(name='学员组')
-        print("st_gp:", st_gp)
-        pm = models.StudentPermission.objects.first()  # 获取权限对象
-        print("pm:", pm)
-        # print(dir(pm))
-        print("-----------------------")
-        if not u_obj.has_perm('my_courses', pm):
-            assign_perm('my_courses', st_gp, pm)
-        if not u_obj.has_perm('my_grade', pm):
-            assign_perm('my_grade', st_gp, pm)
-        if not u_obj.has_perm('homework_detail', pm):
-            assign_perm('homework_detail', st_gp, pm)
-        if not u_obj.has_perm('delete_file', pm):
-            assign_perm('delete_file', st_gp, pm)
-        if not u_obj.has_perm('my_homeworks', pm):
-            assign_perm('my_homeworks', st_gp, pm)
-        u_obj.groups.add(st_gp)
-    elif role == "easycrmadmin":
-        ad_gp = Group.objects.get(name='管理员组')
-        print("ad_gp:", ad_gp)
-        pm = models.AdminPermission.objects.first()  # 获取权限对象
-        print("pm:", pm)
-        # print(dir(pm))
-        print("-----------------------")
-        if not u_obj.has_perm('easy_admin_main_pg', pm):
-            assign_perm('easy_admin_main_pg', ad_gp, pm)
-        if not u_obj.has_perm('app_tables', pm):
-            assign_perm('app_tables', ad_gp, pm)
-        if not u_obj.has_perm('this_table', pm):
-            assign_perm('this_table', ad_gp, pm)
-        if not u_obj.has_perm('table_add', pm):
-            assign_perm('table_add', ad_gp, pm)
-        if not u_obj.has_perm('table_modify', pm):
-            assign_perm('table_modify', ad_gp, pm)
-        if not u_obj.has_perm('table_delete', pm):
-            assign_perm('table_delete', ad_gp, pm)
-        u_obj.groups.add(ad_gp)
+    if u_obj.is_admin:
+        if role == "easycrmadmin":
+
+            # ad_gp = Group.objects.get(name='管理员组')
+            # print("ad_gp:", id(ad_gp))
+            pm = models.AdminPermission.objects.first()  # 获取权限对象
+            # print(pm._meta.permissions)
+            pm_l = (index[0] for index in pm._meta.permissions)
+            return pm_l
+            # for i in pm_l:
+            #     print(i)
+            # print(pm.Meta)
+            # if pm not in permissions_list:
+            #     print("pm:", pm)
+            #     permissions_list.append(pm)
+
+            # print(dir(pm))
+            # print("-----------------------")
+            # u_obj.user_permissions.clear()
+            # remove_perm('easy_admin_main_pg', u_obj, pm)
+            # remove_perm('app_tables', u_obj, pm)
+            # remove_perm('this_table', u_obj, pm)
+            # remove_perm('table_add', u_obj, pm)
+            # remove_perm('table_modify', u_obj, pm)
+            # remove_perm('table_delete', u_obj, pm)
+            # print(u_obj.has_perm('easy_admin_main_pg', pm))
+            # if not u_obj.has_perm('easy_admin_main_pg', pm):
+            #     print("gogogogogogogo")
+            #     assign_perm('easy_admin_main_pg', u_obj, pm)
+            # if not u_obj.has_perm('app_tables', pm):
+            #     assign_perm('app_tables', u_obj, pm)
+            # if not u_obj.has_perm('this_table', pm):
+            #     assign_perm('this_table', u_obj, pm)
+            # if not u_obj.has_perm('table_add', pm):
+            #     assign_perm('table_add', u_obj, pm)
+            # if not u_obj.has_perm('table_modify', pm):
+            #     assign_perm('table_modify', u_obj, pm)
+            # if not u_obj.has_perm('table_delete', pm):
+            #     assign_perm('table_delete', u_obj, pm)
+            # u_obj.groups.add(ad_gp)
+            # print(u_obj.name)
+            # print(u_obj.has_perm('easy_admin_main_pg', pm))
     else:
-        pass
+        if role == "market":
+            sale_gp = Group.objects.get(name='销售组')
+            print("sale_gp:", sale_gp)
+            pm = models.SalesPermission.objects.first()  # 获取权限对象
+            # if pm not in permissions_list:
+            #     permissions_list.append(pm)
+            print("pm:", pm)
+            # print(dir(pm))
+            # print("-----------------------")
+            # print(u_obj.has_perm('market_main_pg', pm))
+            # if not u_obj.has_perm('market_main_pa', pm):
+            #     assign_perm('market_main_pg', sale_gp, pm)
+            # if not u_obj.has_perm('customers', pm):
+            #     assign_perm('customers', sale_gp, pm)
+            # if not u_obj.has_perm('customer_modify', pm):
+            #     assign_perm('customer_modify', sale_gp, pm)
+            # if not u_obj.has_perm('enrollment', pm):
+            #     assign_perm('enrollment', sale_gp, pm)
+            # if not u_obj.has_perm('stu_enrollment', pm):
+            #     assign_perm('stu_enrollment', sale_gp, pm)
+            # u_obj.groups.add(sale_gp)
+        elif role == "teacher":
+            tc_gp = Group.objects.get(name='讲师组')
+            print("tc_gp:", tc_gp)
+            pm = models.TeacherPermission.objects.first()  # 获取权限对象
+            # if pm not in permissions_list:
+            #     permissions_list.append(pm)
+            print("pm:", pm)
+            # print(dir(pm))
+            # print("-----------------------")
+            # if not u_obj.has_perm('teacher_main_pg', pm):
+            #     assign_perm('teacher_main_pg', tc_gp, pm)
+            # if not u_obj.has_perm('my_classes', pm):
+            #     assign_perm('my_classes', tc_gp, pm)
+            # if not u_obj.has_perm('course_record', pm):
+            #     assign_perm('course_record', tc_gp, pm)
+            # if not u_obj.has_perm('view_class_stu_list', pm):
+            #     assign_perm('view_class_stu_list', tc_gp, pm)
+            # u_obj.groups.add(tc_gp)
+        elif role == "student":
+            st_gp = Group.objects.get(name='学员组')
+            print("st_gp:", st_gp)
+            pm = models.StudentPermission.objects.first()  # 获取权限对象
+            print("pm:", pm)
+            # if pm not in permissions_list:
+            #     permissions_list.append(pm)
+            # print(dir(pm))
+            # print("-----------------------")
+            # if not u_obj.has_perm('my_courses', pm):
+            #     assign_perm('my_courses', st_gp, pm)
+            # if not u_obj.has_perm('my_grade', pm):
+            #     assign_perm('my_grade', st_gp, pm)
+            # if not u_obj.has_perm('homework_detail', pm):
+            #     assign_perm('homework_detail', st_gp, pm)
+            # if not u_obj.has_perm('delete_file', pm):
+            #     assign_perm('delete_file', st_gp, pm)
+            # if not u_obj.has_perm('my_homeworks', pm):
+            #     assign_perm('my_homeworks', st_gp, pm)
+            # u_obj.groups.add(st_gp)
+        else:
+            pass
     # db_pms = u_obj.permissions.all()
     # # print("init_permissions:", db_pms)
     # for index in db_pms:  # 获得权限名称
@@ -158,9 +192,17 @@ from django.http import Http404, HttpResponseRedirect
 def perm_check(*args, **kwargs):
     request = args[0]
     resolve_url_obj = resolve(request.path)
-    print("resolve_url_obj:", resolve_url_obj)
+    print(dir(request.user))
+    # print("resolve_url_obj:", resolve_url_obj)
     current_url_name = resolve_url_obj.url_name  # 当前url的url_name
     print("current_url:", current_url_name)
+    # print(permissions_list)
+    # pm_list = (pm for pm in permissions_list)
+    has_permission = True
+    print("222:", request.user.user_permissions.values())
+    return has_permission
+
+    # print(request.user.has_perm('view_task', task))
     # current_url_name = resolve_url_obj.url_name  # 当前url的url_name
     # print('---perm:',request.user,request.user.is_authenticated(),current_url_name)
     # #match_flag = False
@@ -252,6 +294,7 @@ def perm_check(*args, **kwargs):
 
 def check_permission(func):
     def inner(*args, **kwargs):
-        perm_check(*args, **kwargs)
+        if not perm_check(*args, **kwargs):
+            raise Http404("您没有权限访问")
         return func(*args, **kwargs)
     return inner

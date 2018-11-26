@@ -59,7 +59,7 @@ class UserProfileAdmin(UserAdmin):
     # The fields to be used in displaying the User model.
     # These override the definitions on the base UserAdmin
     # that reference specific fields on auth.User.
-    list_display = ('id', 'email', 'is_admin', 'is_active', )
+    list_display = ('id', 'email', 'is_admin', 'is_active')
     list_filter = ('is_admin', )
     # list_editable = ['is_admin']
     # 设置fieldsets 控制管理“添加”和 “更改” 页面的布局{分类标题: {'fields'}: ('字段名1', '字段名2')}
@@ -67,6 +67,7 @@ class UserProfileAdmin(UserAdmin):
         (None, {'fields': ('email', 'password')}),
         ('个人信息', {'fields': ('name',)}),
         ('权限', {'fields': ('is_admin',)}),
+        # ('权限', {'fields': ('is_admin', 'user_permissions', 'roles')}),
     )
     # 不加下面这个属性会出错,原因看笔记和https://github.com/django/django/blob/master/django/contrib/auth/admin.py#L47
     # dd_fieldsets is not a standard ModelAdmin attribute. UserAdmin
@@ -79,7 +80,7 @@ class UserProfileAdmin(UserAdmin):
     )
     search_fields = ('email', )
     ordering = ('email', )
-    filter_horizontal = ('user_permissions', 'groups')
+    # filter_horizontal = ('user_permissions', 'groups', 'roles')
 
 
 class CustomerAdmin(admin.ModelAdmin):

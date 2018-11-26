@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>EasyCRM注册</title>
+
+        <!-- CSS -->
+        <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:400,100,300,500">
+        <link rel="stylesheet" href="/static/assets/bootstrap/css/bootstrap.min.css">
+        <link rel="stylesheet" href="/static/assets/font-awesome/css/font-awesome.min.css">
+		<link rel="stylesheet" href="/static/assets/css/form-elements.css">
+        <link rel="stylesheet" href="/static/assets/css/style.css">
+
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+
+        <!-- Favicon and touch icons -->
+        <link rel="shortcut icon" href=/static/"assets/ico/favicon.png">
+        <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/static/assets/ico/apple-touch-icon-144-precomposed.png">
+        <link rel="apple-touch-icon-precomposed" sizes="114x114" href="/static/assets/ico/apple-touch-icon-114-precomposed.png">
+        <link rel="apple-touch-icon-precomposed" sizes="72x72" href="/static/assets/ico/apple-touch-icon-72-precomposed.png">
+        <link rel="apple-touch-icon-precomposed" href="/static/assets/ico/apple-touch-icon-57-precomposed.png">
+
+    </head>
+
+    <body>
+
+		<!-- Top menu -->
+
+        <!-- Top content -->
+        <div class="top-content">
+        	<div class="copyrights">Tony<a href="#"  title="EasyCRM">EasyCRM</a></div>
+            <div class="inner-bg">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-sm-7 text">
+                            <div class="top-big-link">
+                            	<a class="btn btn-link-1" href="#">欢迎</a>
+                            	<a class="btn btn-link-2" href="#">使用</a>
+                            </div>
+                        </div>
+                        <div class="col-sm-5 form-box">
+                        	<div class="form-top">
+                        		<div class="form-top-left">
+                        			<h3>现在注册</h3>
+                            		<p>填写下面表格完成注册:</p>
+                        		</div>
+                        		<div class="form-top-right">
+                        			<i class="fa fa-pencil"></i>
+                        		</div>
+                        		<div class="form-top-divider"></div>
+                            </div>
+                            <div class="form-bottom">
+			                    <form role="form" action="/register/" method="post" class="registration-form">
+                                    {% csrf_token %}
+			                    	<div class="form-group">
+			                    		<label class="sr-only" for="form-email">Email</label>
+			                        	<!--input type="text" name="form-email" placeholder="邮箱地址" class="form-control" id="form-first-name"-->
+                                        {{ rg_obj.email }}
+			                        </div>
+			                        <div class="form-group">
+			                        	<label class="sr-only" for="form-name">username</label>
+			                        	<!--input type="text" name="form-name" placeholder="用户名" class="form-last-name form-control" id="form-last-name"-->
+                                        {{ rg_obj.name }}
+			                        </div>
+			                        <div class="form-group">
+			                        	<label class="sr-only" for="form-password">Email</label>
+			                        	<!--input type="password" name="form-password" placeholder="输入密码" class="form-email form-control" id="form-email"-->
+                                        {{ rg_obj.password }}
+			                        </div>
+                                    <div class="form-group">
+			                        	<label class="sr-only" for="form-repassword">Email</label>
+			                        	<!--input type="password" name="form-repassword" placeholder="再次输入密码" class="form-email form-control" id="form-email"-->
+			                            {{ rg_obj.re_password }}
+                                    </div>
+			                        <div class="form-group">
+			                        	<label class="sr-only" for="form-about-yourself">About yourself</label>
+			                        	<textarea name="form-about-yourself" placeholder="关于您的简单自我介绍..."
+			                        				class="form-about-yourself form-control" id="form-about-yourself"></textarea>
+			                        </div>
+			                        <button type="submit" class="btn">完成!</button>
+                                    <p style="color: red">{{ errors }}</p>
+			                    </form>
+		                    </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Javascript -->
+        <script src="/static/assets/js/jquery-1.11.1.min.js"></script>
+        <script src="/static/assets/bootstrap/js/bootstrap.min.js"></script>
+        <script src="/static/assets/js/jquery.backstretch.min.js"></script>
+        <script src="/static/assets/js/retina-1.1.0.min.js"></script>
+        <script src="/static/assets/js/scripts.js"></script>
+
+        <!--[if lt IE 10]>
+            <script src="assets/js/placeholder.js"></script>
+        <![endif]-->
+
+    </body>
+
+</html>

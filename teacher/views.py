@@ -3,16 +3,19 @@ from django.contrib.auth.decorators import login_required
 from repository import models
 from easycrmadmin import views as easy_admin_views
 from easycrmadmin.easycrm_admin import site
+from easycrmadmin import permission_control
 # Create your views here.
 
 
 @login_required
+@permission_control.check_permission
 def main_pg(request):
     print('teacher')
     return render(request, 'teacher/teacher_main_pg.html')
 
 
 @login_required
+@permission_control.check_permission
 def view_class_stu_list(request, cid):
     class_obj = models.ClassList.objects.get(id=cid)
     print("class_obj:", class_obj)
@@ -20,11 +23,13 @@ def view_class_stu_list(request, cid):
 
 
 @login_required
+@permission_control.check_permission
 def my_classes(request):
     return render(request, 'teacher/my_classes.html')
 
 
 @login_required
+@permission_control.check_permission
 def course_record_display(request, app_name, model_name, cr_id):
     """
     上课记录处理

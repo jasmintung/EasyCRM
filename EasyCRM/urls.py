@@ -23,6 +23,7 @@ from django.views.decorators.cache import cache_page
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    re_path('register/', views.register, name="register"),
     re_path('accounts/login/', views.login, name="mlogin"),  # 没有登陆时Django会自动走到这里进行登陆验证
     re_path('accounts/logout/', views.logout, name="mlogout"),
     path('easycrmadmin/', include('easycrmadmin.urls')),
@@ -30,5 +31,6 @@ urlpatterns = [
     path('student/', include('student.urls')),
     path('teacher/', include('teacher.urls')),
     path('boss/', include('boss.urls')),
-    path('', cache_page(60*60*24)(views.HomePageNavigation.as_view())),  # 主页一天刷新一次缓存
+    path('', cache_page(5)(views.HomePageNavigation.as_view())),  # 主页一天刷新一次缓存
+    # path('', cache_page(24*60*60)(views.HomePageNavigation.as_view())),  # 主页一天刷新一次缓存
 ]

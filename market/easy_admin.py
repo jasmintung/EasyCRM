@@ -64,7 +64,7 @@ class UserProfileAdmin(BaseEasyCrmAdmin):
     # The fields to be used in displaying the User model.
     # These override the definitions on the base UserAdmin
     # that reference specific fields on auth.User.
-    list_display = ('id', 'email', 'is_staff', 'is_admin')
+    list_display = ('id', 'email', 'is_admin')
     list_filter = ('is_admin',)
     # fieldsets = (
     #     (None, {'fields': ('email', 'password')}),
@@ -81,7 +81,7 @@ class UserProfileAdmin(BaseEasyCrmAdmin):
     # )
     search_fields = ['email']
     ordering = ('email',)
-    filter_horizontal = ()
+    filter_horizontal = ('user_permissions', 'roles')
 
 
 class EnrollmentAdmin(BaseEasyCrmAdmin):
