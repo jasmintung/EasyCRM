@@ -1,4 +1,4 @@
-from django.shortcuts import render, HttpResponse
+from django.shortcuts import render, HttpResponse, redirect, reverse
 from django.contrib.auth.decorators import login_required
 from easycrmadmin import views as easyadmin_views
 from forms import ad_forms
@@ -6,17 +6,41 @@ from repository import models
 from market.easy_admin import site
 from forms import stu_form
 from django.core.cache import cache
+from django.contrib.auth.models import Permission
 import json
 import os
 from EasyCRM.settings import ENROLLED_DATA
 from easycrmadmin import permission_control
 # Create your views here.
 
+had_allote_permission = False
+
+
+def allote_market_permissions(request):
+    if Permission.objects.get(codename='this_table'):
+        perm_obj = Permission.objects.get(codename='this_table')
+        request.user.user_permissions.add(perm_obj)
+    if Permission.objects.get(codename='table_modify'):
+        perm_obj = Permission.objects.get(codename='table_modify')
+        request.user.user_permissions.add(perm_obj)
+    if Permission.objects.get(codename='table_add'):
+        perm_obj = Permission.objects.get(codename='table_add')
+        request.user.user_permissions.add(perm_obj)
+    if Permission.objects.get(codename='table_delete'):
+        perm_obj = Permission.objects.get(codename='table_add')
+        request.user.user_permissions.add(perm_obj)
+
+    global had_allote_permission
+    had_allote_permission = True
+
 
 @login_required
 @permission_control.check_permission
 def main_pg(request):
-    print('market')
+    # print('market')
+    if had_allote_permission is False:
+        print("为销售分配权限")
+        allote_market_permissions(request)
     return render(request, 'market/market_main_pg.html')
 
 
@@ -27,11 +51,14 @@ def customers(request):
     :param request:
     :return:
     """
+    # 分配权限
+
     tp_data = easyadmin_views.table_display(request, 'repository', 'customer', innercall=True)
     # print("tp:", tp_data)
     return render(request, 'market/market_customers.html', tp_data)
 
 
+@login_required
 def customers_modify(request, nid):
     """
     修改客户信息
@@ -39,6 +66,27 @@ def customers_modify(request, nid):
     :param nid: 要修改的客户ID
     :return:
     """
+    # print("customer_modify")
+    template_data = easyadmin_views.table_modify(request, 'repository', 'customer', nid, innercall=True)
+    if type(template_data) is dict:
+        return render(request, 'market/market_customers_change.html', template_data)
+    else:
+        return template_data
+
+
+@login_required
+def my_customers(request):
+    """
+    浏览自己的客户库
+    :param request:
+    :return:
+    """
+    # print("my_customers")
+    admin_table_list_url = reverse('this_table', args=('repository', 'customer',))
+    # u_obj = models.UserProfile.objects.filter(name=request.user.name)
+    # print(request.user.id)
+
+    return redirect(admin_table_list_url+'?consultant=%s' % request.user.id)
 
 
 @login_required
@@ -136,7 +184,7 @@ def enrollment(request, nid):
 
                 else:
                     form.save()
-                    cache.set(form.instance.id, "available time", 60*60)  # 报名链接一小时的有效时间,报名链接动态字符串后续完善把
+                    cache.set(form.instance.id, "available time", 30*60)  # 报名链接半小时的有效时间,报名链接动态字符串后续完善把
                     print("id:", form.instance.id)
                     result_msg = {'pass': 1, 'step': 2, 'enroll_obj': form.instance}
                     print("enrollment save")

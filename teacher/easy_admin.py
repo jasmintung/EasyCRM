@@ -10,13 +10,15 @@ class CourseRecordAdmin(BaseEasyCrmAdmin):
 
     def initialize_studyrecords(self, request, queryset):
         print("initialize_courserecords")
+        # print(queryset[0])  # CourseRecord对象
         new_obj_list = []
-        for enroll_obj in queryset[0].from_class.enrollment_set.all():
+        for enroll_obj in queryset[0].from_class.enrollment_set.all():  # 反向查询得到报名记录
             new_obj_list.append(models.StudyRecord(student=enroll_obj, course_record=queryset[0], attendance=0,
                                                    score=0))
 
         try:
-            models.StudyRecord.objects.bulk_create(new_obj_list)
+            print("课程记录:", new_obj_list)
+            models.StudyRecord.objects.bulk_create(new_obj_list)  # 批量创建
             return HttpResponse("操作成功")
         except Exception as e:
             return HttpResponse("批量初始化失败")

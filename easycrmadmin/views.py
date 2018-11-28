@@ -15,9 +15,8 @@ import json
 @login_required
 @permission_control.check_permission
 def main_pg(request):
-    print('easyadmin boot page')
-    # return HttpResponse('easyadmin')
-    # print(site.enabled_funcs)
+    # print("main_pg:", request.get_host())
+    # print("pre pg:", request.META['HTTP_REFERER'])
     return render(request, 'admin/easy_admin.html', {'enabled_apps': site.enabled_funcs})
 
 
@@ -26,6 +25,7 @@ def main_pg(request):
 def app_tables(request, app_name):
     enabled_tb_cls = {app_name: site.enabled_funcs[app_name]}
     # print("t app_name:", app_name)
+    # print("app_tables:", request.path)
     return render(request, 'admin/easy_admin.html', {'enabled_apps': enabled_tb_cls, 'current_app': app_name})
 
 
@@ -46,7 +46,7 @@ def update_tb_rows(request, edit_datas, admin_class):
                     print("edit success.")
                     form_obj.save()
                 else:
-                    pass
+                    print(form_obj.errors)
         except Exception as ex:
             print(ex)
     return True, []
@@ -62,12 +62,14 @@ def table_display(request, app_name, table_name, innercall=False):
     :param table_name:
     :return:
     """
-    # 判断是不是注册过的APP
 
+    # 判断是不是注册过的APP
+    print("table_display:", request.path)
+    # print("pre pg:", request.META['HTTP_REFERER'])
     # print("table_display")
-    print("app name:", app_name)
-    print("table name:", table_name)
-    print(site.enabled_funcs)
+    # print("app name:", app_name)
+    # print("table name:", table_name)
+    # print(site.enabled_funcs)
     errors = []
     if app_name in site.enabled_funcs:
         # print("app in here!")
@@ -75,20 +77,20 @@ def table_display(request, app_name, table_name, innercall=False):
             # print("table in here!")
             admin_class = site.enabled_funcs[app_name][table_name]
             if request.method == "POST":  # 目前的POST情况有:1、修改数据2、action
-                # print("POST INFO:", request.POST)
+                print("POST INFO:", request.POST)
                 edited_datas = request.POST.get("editable_data")
                 if edited_datas:
-                    print(edited_datas)  # [{"source":"others","status":"signed","id":"1"},]
+                    # print(edited_datas)  # [{"source":"others","status":"signed","id":"1"},]
                     if edited_datas:
                         edited_datas = json.loads(edited_datas)
                         update_tb_rows(request, edited_datas, admin_class)
                         # print(edited_datas)
-                        for index in edited_datas:
-                            print(index)  # {'source': 'others', 'status': 'signed', 'id': '1'}
+                        # for index in edited_datas:
+                        #     print(index)  # {'source': 'others', 'status': 'signed', 'id': '1'}
                         # 更新对应数据
                 else:
                     # action
-                    print("action op:", request.POST)
+                    # print("action op:", request.POST)
                     selected_ids = request.POST.get("selected_ids")  # 要批量操作的数据
                     action = request.POST.get("admin_action")  # action的方法名称
                     if selected_ids:
@@ -97,8 +99,8 @@ def table_display(request, app_name, table_name, innercall=False):
                         raise KeyError("没有选中的对象")
                     if hasattr(admin_class, action):
                         action_func = getattr(admin_class, action)
-                        # print("action fun:", action_func)
-                        # print("selected_ids:", selected_ids)  # 要操作的对象些
+                        print("action fun:", action_func)
+                        print("selected_ids:", selected_ids)  # 要操作的对象些
                         return action_func(admin_class, request, selected_ids)  # 调用admin_base中的方法
 
             # print(admin_class)  # 获取到对应model class的AdminClass, <class 'easycrmadmin.easy_admin.CustomerAdmin'>
@@ -117,8 +119,8 @@ def table_display(request, app_name, table_name, innercall=False):
                 table_obj_list = paginator.get_page(1)  # 返回到第一页的对象
             except EmptyPage:
                 table_obj_list = paginator.get_page(paginator.num_pages)
-
             table_obj = table_operate.TableHandler(request, admin_class, table_obj_list, order_res)
+
             return_data = {'table_obj': table_obj,
                            'app_name': app_name,
                            'paginator': paginator,
@@ -134,19 +136,22 @@ def table_display(request, app_name, table_name, innercall=False):
 
 @login_required
 @permission_control.check_permission
-def table_modify(request, app_name, table_name, obj_nid):
-    print(app_name, table_name, obj_nid)
+def table_modify(request, app_name, table_name, obj_nid, innercall=False):
+    # print(app_name, table_name, obj_nid)
+    print("table_modify:", request.path)
+    # print("pre pg:", request.META['HTTP_REFERER'])
     if app_name in site.enabled_funcs:
         if table_name in site.enabled_funcs[app_name]:
             admin_class = site.enabled_funcs[app_name][table_name]
             obj = admin_class.model.objects.get(id=obj_nid)
+            # obj = admin_class.model.objects.filter(id=obj_nid)
             fields = []
             for field_obj in admin_class.model._meta.fields:
                 if field_obj.editable:
                     fields.append(field_obj.name)
             for field_obj in admin_class.model._meta.many_to_many:
-                fields.append(field_obj)
-            model_form = ad_forms.init_modelform(admin_class.model, fields, admin_class)
+                fields.append(field_obj.name)
+            model_form = ad_forms.init_modelform(admin_class.model, fields, admin_class, form_create=False, request=request)
             if request.method == "GET":
                 form_obj = model_form(instance=obj)
             elif request.method == "POST":
@@ -156,13 +161,16 @@ def table_modify(request, app_name, table_name, obj_nid):
                     if form_obj.is_valid():
                         print("修改成功")
                         form_obj.save()
-
-            return render(request, 'admin/admin_tb_modify.html', {'form_obj': form_obj,
-                                                                  'model_verbose_name': admin_class.model._meta.verbose_name,
-                                                                  'model_name': admin_class.model._meta.model_name,
-                                                                  'app_name': app_name,
-                                                                  'admin_class': admin_class,
-                                                                  'enabled_admins': site.enabled_funcs})
+                        return redirect(request.path.rstrip('/modify/%s/'.format(obj_nid)))
+            return_data = {'form_obj': form_obj,
+                                      'model_verbose_name': admin_class.model._meta.verbose_name,
+                                      'model_name': admin_class.model._meta.model_name,
+                                      'app_name': app_name,
+                                      'admin_class': admin_class,
+                                      'enabled_admins': site.enabled_funcs}
+            if innercall is True:
+                return return_data
+            return render(request, 'admin/admin_tb_modify.html', return_data)
 
 
 @login_required
@@ -177,33 +185,57 @@ def table_add(request, app_name, model_name):
     """
     # print(app_name, model_name)  # easycrmadmin customer
     # print(site.enabled_funcs)
+    print("table_add:", request.path)
+    # print("pre pg:", request.META['HTTP_REFERER'])
     if app_name in site.enabled_funcs:
         if model_name in site.enabled_funcs[app_name]:
             fields = []
             admin_class = site.enabled_funcs[app_name][model_name]
             for field_obj in admin_class.model._meta.fields:
                 # print("field_obj:", field_obj)
-                # print("filed name:", field_obj.name)  # 表字段名
                 if field_obj.editable:
+                    # print("111filed name:", field_obj.name)  # 表字段名
                     fields.append(field_obj.name)
             for field_obj in admin_class.model._meta.many_to_many:
                 fields.append(field_obj.name)
-            model_form = ad_forms.init_modelform(admin_class.model, fields, admin_class)
+                # print("222filed name:", field_obj.name)  # 表字段名
+            model_form = ad_forms.init_modelform(admin_class.model,
+                                                 fields,
+                                                 admin_class,
+                                                 form_create=True,
+                                                 request=request)
 
             if request.method == "GET":
                 form_obj = model_form()
             elif request.method == "POST":
-                print("POST................................")
+                # print("POST................................")
                 print(request.POST)
                 form_obj = model_form(request.POST)
                 if form_obj.is_valid():
                     print("添加成功")
+                    print(request.POST)
+                    print(model_name)
+                    choice_roles = []
+                    if model_name == "userprofile":
+                        new_user = form_obj.save(commit=False)
+                        # 分配权限
+                        choice_roles = request.POST.getlist('roles')
+                        # choice_roles = request.POST.get('roles')  # 这样写只能获取到最后一个值
+                        new_user.set_password(request.POST.get('password'))  # 登陆时authenticate采用hash校验,不能直接保存明文
+                        new_user.save()
                     form_obj.save()
+                    if model_name == "userprofile":
+                        user_obj = admin_class.model.objects.get(name=request.POST.get('name'))
+                        print("oooooo: ", user_obj)
+                        permission_control.allot_permissions(user_obj, choice_roles)
+                    if request.user.is_admin is False:
+                        print(request.META['HTTP_REFERER'])
+                    else:
+                        return redirect(request.path.rstrip('/add/'))
                 else:
                     print("添加失败")
                     print(form_obj.errors)
-                return redirect(request.path.rstrip('/add/'))
-            print("form_obj:", form_obj)
+            # print("form_obj:", form_obj)
             return render(request, 'admin/admin_tb_add.html',
                           {'form_obj': form_obj,
                            'model_name': admin_class.model._meta.model_name,
@@ -223,7 +255,9 @@ def table_delete(request, app_name, model_name, nid):
     :param nid:
     :return:
     """
-    print(app_name, model_name, nid)
+    # print(app_name, model_name, nid)
+    print("table_delete:", request.path)
+    print("pre pg:", request.META['HTTP_REFERER'])
     if app_name in site.enabled_funcs:
         if model_name in site.enabled_funcs[app_name]:
             admin_class = site.enabled_funcs[app_name][model_name]

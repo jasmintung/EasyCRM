@@ -14,15 +14,14 @@ def load_menus(request):
     :return:
     """
     menus = []
-    print("request info", request)
-    print(dir(request.user))
-    print("登陆账户名:", request.user.name)
-    print(request.user.roles)
+    # print("request info", request)
+    # print(dir(request.user))
+    # print("登陆账户名:", request.user.name)
 
-    print(request.user.roles.select_related())  # 因为是多对多,所以一并查找出来
+    # print(request.user.roles.select_related())  # 因为是多对多,所以一并查找出来
     for role in request.user.roles.select_related():
         menus.extend(role.menus.select_related())
-    print("menus:", menus)
+    # print("menus:", menus)
     return set(menus)
 
 
@@ -163,7 +162,7 @@ def get_table_column(column, table_obj):
     :param table_obj: 表对象
     :return: 列注释名
     """
-    print(table_obj)
+    # print(table_obj)
     if hasattr(table_obj.model_class, column):
         return table_obj.model_class._meta.get_field(column).verbose_name
     else:  # 自定义非表中但要在前端显示在表单中的字段
@@ -207,9 +206,9 @@ def load_search_element(table_obj):
     :param table_obj:
     :return:
     """
-    print("load_search_element:", table_obj.request.GET)
-    print("table obj model class:", table_obj.model_class)
-    print(table_obj.search_fields)
+    # print("load_search_element:", table_obj.request.GET)
+    # print("table obj model class:", table_obj.model_class)
+    # print(table_obj.search_fields)
 
     if table_obj.search_fields:
         already_exist_ars = ''
@@ -270,7 +269,7 @@ def get_course_grades(class_obj):
     :param class_obj:
     :return:
     """
-    print("get_course_grades")
+    # print("get_course_grades")
     objs = None
     try:
         objs = models.StudyRecord.objects.filter(course_record__from_class=class_obj).values_list('student').annotate(Sum('score'))
@@ -313,6 +312,7 @@ def get_stu_grade_ranking(course_ranking_dic, enroll_obj):
 
 @register.simple_tag
 def fetch_stu_course_score(class_grade_dic, enroll_obj):
+    print(class_grade_dic.get(enroll_obj.id))
     return class_grade_dic.get(enroll_obj.id)
 
 
@@ -322,8 +322,11 @@ def get_study_record_count(enroll_obj):
     study_records = []
     course_records = enroll_obj.course_grade.courserecord_set.select_related()  # 反查
     for obj in course_records:
-        print(obj)
+        # print(obj)
         study_records.extend(obj.studyrecord_set.select_related().filter(student=enroll_obj))
+    # print(study_records)
+    # for i in study_records:
+    #     print(i.score_choices)  # ((100, 'A+'), (90, 'A'), (85, 'B+'), (80, 'B'), (70, 'B-'), (60, 'C+'), (50, 'C'), (40, 'C-'), (-50, 'D'), (0, 'N/A'), (-100, 'COPY'), (-1000, 'FAIL'))
     return study_records
 
 

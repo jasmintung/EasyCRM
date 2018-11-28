@@ -14,7 +14,7 @@ from guardian.shortcuts import assign_perm
 from guardian.shortcuts import assign_perm
 from guardian.shortcuts import remove_perm
 from guardian.shortcuts import get_perms
-
+from django.contrib.auth.models import Permission
 
 # def __new__(cls, *args, **kwargs):
 #     return models.Model.__new__(cls)
@@ -43,7 +43,7 @@ def init_permissions(u_obj, role):
             # ad_gp = Group.objects.get(name='管理员组')
             # print("ad_gp:", id(ad_gp))
             pm = models.AdminPermission.objects.first()  # 获取权限对象
-            # print(pm._meta.permissions)
+            print(pm._meta.permissions)
             pm_l = (index[0] for index in pm._meta.permissions)
             return pm_l
             # for i in pm_l:
@@ -81,12 +81,12 @@ def init_permissions(u_obj, role):
             # print(u_obj.has_perm('easy_admin_main_pg', pm))
     else:
         if role == "market":
-            sale_gp = Group.objects.get(name='销售组')
-            print("sale_gp:", sale_gp)
+            # sale_gp = Group.objects.get(name='销售组')
+            # print("sale_gp:", sale_gp)
             pm = models.SalesPermission.objects.first()  # 获取权限对象
-            # if pm not in permissions_list:
-            #     permissions_list.append(pm)
-            print("pm:", pm)
+            # print(pm._meta.permissions)
+            pm_l = (index[0] for index in pm._meta.permissions)
+            return pm_l
             # print(dir(pm))
             # print("-----------------------")
             # print(u_obj.has_perm('market_main_pg', pm))
@@ -102,12 +102,12 @@ def init_permissions(u_obj, role):
             #     assign_perm('stu_enrollment', sale_gp, pm)
             # u_obj.groups.add(sale_gp)
         elif role == "teacher":
-            tc_gp = Group.objects.get(name='讲师组')
-            print("tc_gp:", tc_gp)
+            # tc_gp = Group.objects.get(name='讲师组')
+            # print("tc_gp:", tc_gp)
             pm = models.TeacherPermission.objects.first()  # 获取权限对象
-            # if pm not in permissions_list:
-            #     permissions_list.append(pm)
-            print("pm:", pm)
+            # print(pm._meta.permissions)
+            pm_l = (index[0] for index in pm._meta.permissions)
+            return pm_l
             # print(dir(pm))
             # print("-----------------------")
             # if not u_obj.has_perm('teacher_main_pg', pm):
@@ -120,10 +120,12 @@ def init_permissions(u_obj, role):
             #     assign_perm('view_class_stu_list', tc_gp, pm)
             # u_obj.groups.add(tc_gp)
         elif role == "student":
-            st_gp = Group.objects.get(name='学员组')
-            print("st_gp:", st_gp)
+            # st_gp = Group.objects.get(name='学员组')
+            # print("st_gp:", st_gp)
             pm = models.StudentPermission.objects.first()  # 获取权限对象
-            print("pm:", pm)
+            # print(pm._meta.permissions)
+            pm_l = (index[0] for index in pm._meta.permissions)
+            return pm_l
             # if pm not in permissions_list:
             #     permissions_list.append(pm)
             # print(dir(pm))
@@ -190,111 +192,61 @@ from django.http import Http404, HttpResponseRedirect
 
 
 def perm_check(*args, **kwargs):
+    # print(kwargs)
+    # print(args)
     request = args[0]
     resolve_url_obj = resolve(request.path)
-    print(dir(request.user))
+    # print(dir(request.user))
     # print("resolve_url_obj:", resolve_url_obj)
     current_url_name = resolve_url_obj.url_name  # 当前url的url_name
-    print("current_url:", current_url_name)
+    # print("current_url:", current_url_name)
     # print(permissions_list)
     # pm_list = (pm for pm in permissions_list)
-    has_permission = True
-    print("222:", request.user.user_permissions.values())
+    has_permission = False
+    # print("222:", request.user.user_permissions.values())
+    for codename in request.user.user_permissions.values():
+        # print(codename)
+        if current_url_name == codename.get("codename"):
+            # print("有权限...", codename.get("codename"))
+            has_permission = True
+            break
     return has_permission
-
-    # print(request.user.has_perm('view_task', task))
-    # current_url_name = resolve_url_obj.url_name  # 当前url的url_name
-    # print('---perm:',request.user,request.user.is_authenticated(),current_url_name)
-    # #match_flag = False
-    # match_key = None
-    # match_results = [False,] #后面会覆盖，加个False是为了让all(match_results)不出错
-    # if request.user.is_authenticated() is False:
-    #      return redirect(settings.LOGIN_URL)
-    #
-    #
-    # for permission_key,permission_val in  perm_dic.items():
-    #
-    #     per_url_name = permission_val[0]
-    #     per_method  = permission_val[1]
-    #     perm_args = permission_val[2]
-    #     perm_kwargs = permission_val[3]
-    #     custom_perm_func = None if len(permission_val) == 4 else permission_val[4]
-    #
-    #     if per_url_name == current_url_name: #matches current request url
-    #         if per_method == request.method: #matches request method
-    #
-    #             #逐个匹配参数，看每个参数时候都能对应的上。
-    #             args_matched = False #for args only
-    #             for item in perm_args:
-    #                 request_method_func = getattr(request,per_method)
-    #                 if request_method_func.get(item,None):# request字典中有此参数
-    #                     args_matched = True
-    #                 else:
-    #                     print("arg not match......")
-    #                     args_matched = False
-    #                     break  # 有一个参数不能匹配成功，则判定为假，退出该循环。
-    #             else:
-    #                 args_matched = True
-    #             #匹配有特定值的参数
-    #             kwargs_matched = False
-    #             for k,v in perm_kwargs.items():
-    #                 request_method_func = getattr(request, per_method)
-    #                 arg_val = request_method_func.get(k, None)  # request字典中有此参数
-    #                 print("perm kwargs check:",arg_val,type(arg_val),v,type(v))
-    #                 if arg_val == str(v): #匹配上了特定的参数 及对应的 参数值， 比如，需要request 对象里必须有一个叫 user_id=3的参数
-    #                     kwargs_matched = True
-    #                 else:
-    #                     kwargs_matched = False
-    #                     break # 有一个参数不能匹配成功，则判定为假，退出该循环。
-    #             else:
-    #                 kwargs_matched = True
-    #
-    #             #自定义权限钩子
-    #             perm_func_matched = False
-    #             if custom_perm_func:
-    #                 if  custom_perm_func(request,args,kwargs):
-    #                     perm_func_matched = True
-    #                 else:
-    #                     perm_func_matched = False #使整条权限失效
-    #
-    #             else: #没有定义权限钩子，所以默认通过
-    #                 perm_func_matched = True
-    #
-    #             match_results = [args_matched,kwargs_matched,perm_func_matched]
-    #             print("--->match_results ", match_results)
-    #             if all(match_results): #都匹配上了
-    #                 match_key = permission_key
-    #                 break
-    #
-    # if all(match_results):  # 全都是True
-    #     app_name, *per_name = match_key.split('_')
-    #     print("--->matched ",match_results,match_key)
-    #     print(app_name, *per_name)
-    #     perm_obj = '%s.%s' % (app_name,match_key)
-    #     print("perm str:",perm_obj)
-    #     if request.user.has_perm(perm_obj):
-    #         print('当前用户有此权限')
-    #         return True
-    #     else:
-    #         print('当前用户没有该权限')
-    #         return False
-    #
-    # else:
-    #     print("未匹配到权限项，当前用户无权限")
-
-
-# def check_permission(func):
-#     def inner(*args,**kwargs):
-#         if not perm_check(*args,**kwargs):
-#             request = args[0]
-#             return render(request,'kingadmin/page_403.html')
-#         return func(*args,**kwargs)
-#     return inner
 
 
 def check_permission(func):
     def inner(*args, **kwargs):
         if not perm_check(*args, **kwargs):
+            print("after check")
+            # print(args, kwargs)
             raise Http404("您没有权限访问")
         return func(*args, **kwargs)
     return inner
+
+
+def allot_permissions(usr_obj, roles):
+    """
+    1、学员 2、讲师 3、客服
+    这样定死ID肯定不好,后续再优化吧,
+    :param usr_obj:
+    :param roles:
+    :return:
+    """
+    for index in roles:
+        role_name = ''
+        if index == '1':
+            role_name = 'student'
+        if index == '2':
+            role_name = 'teacher'
+        if index == '3':
+            role_name = 'market'
+        pm_list = init_permissions(usr_obj, role_name)
+
+        for i in pm_list:
+            # print(i)
+            if Permission.objects.get(codename=i):
+                perm_obj = Permission.objects.get(codename=i)
+            else:
+                Permission.objects.create(name=i, content_type_id=2, codename=i)
+                perm_obj = Permission.objects.get(codename=i)
+            usr_obj.user_permissions.add(perm_obj)
+        # print(usr_obj.user_permissions.values())

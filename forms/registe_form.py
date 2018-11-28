@@ -34,22 +34,14 @@ class RGFM(login_form.LGFM):
     )
 
     def __init__(self, *args, **kwargs):
-        print(*args)
-        print("-----")
         # dic = {'username': '', 'password': ''}
         super(RGFM, self).__init__(*args, **kwargs)
-        print("init registe form")
+        # print("init registe form")
         self.name = ""
         self.pwd = ""
         self.email = ""
         # self.fields['username'] = kwargs.get('username')
         # self.fields['password'] = kwargs.get('password')
-
-    def clean_username(self):
-        name = self.cleaned_data['username']
-        if UserProfile.objects.filter(username=name).first():
-            raise ValidationError('用户已存在!', 'invalid')  # 这里会返回到前端显示
-        return name
 
     def clean_password(self):
         pwd = self.cleaned_data['password']
@@ -73,6 +65,12 @@ class RGFM(login_form.LGFM):
             self.pwd = cleaned_data.get('password', None)
             self.email = cleaned_data.get('email', None)
         return cleaned_data
+
+    def clean_email(self):
+        email = self.cleaned_data['email']
+        if UserProfile.objects.filter(email=email).filter():
+            raise ValidationError('邮箱已被使用!', 'invalid')  # 这里会返回到前端显示
+        return email
 
     def get_registe_info(self):
         # print("get name")

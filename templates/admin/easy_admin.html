@@ -21,7 +21,7 @@
             <tbody>
                 {% for k,admin_class in admin_class_dic.items %}
                     <tr>
-                        {{ k }}
+{#                        {{ k }}#}
 {#                        <!--td><a style="font-weight:bold ;color: #447e9b" href="{% url 'table_list' app_name k  %}">{% get_db_table_name admin_class %}</a></td-->#}
                         <td><a style="font-weight:bold ;color: #447e9b" href="{% url 'this_table' app_name k %}">{% get_db_table_name admin_class %}</a></td>
 

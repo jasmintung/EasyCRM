@@ -49,6 +49,9 @@ def __new__(cls, *args, **kwargs):
         if 'ModelChoiceField' in field.__repr__():  # 外键关联字段
             attr_dic.update({'data-tag': field_name})
         # print("attr_dic:", attr_dic)
+        if cls.Meta.form_create is False:
+            if field_name in cls.Meta.admin.readonly_fields:
+                attr_dic['disabled'] = True
         field.widget.attrs.update(attr_dic)
 
         if hasattr(cls.Meta.model, "clean_%s" % field_name):
@@ -61,22 +64,24 @@ def __new__(cls, *args, **kwargs):
     return ModelForm.__new__(cls)
 
 
-def init_modelform(model_class, fields, admin_class, **kwargs):
+def init_modelform(model_class, fields, admin_class, form_create=False, **kwargs):
     """
     创建Model Form,不同于以往,这个创建是动态的..以满足不同角色
     :param model_class:
     :param fields:
+    :param form_create: 是否是创建表单
     :return: ModelForm对象
     """
     # type创建参考备忘
     # new_class = type('Cat', (object,), {'meow': remote_call('meow'), 'eat': remote_call('eat'), 'sleep': remote_call('sleep')})
     class Meta:
         pass
-    print("model_class:", model_class)
+    # print("model_class:", model_class)
     setattr(Meta, 'model', model_class)
     print("fields:", fields)
     setattr(Meta, 'fields', fields)
     setattr(Meta, 'admin', admin_class)
+    setattr(Meta, 'form_create', form_create)
     setattr(Meta, 'update_tb', kwargs.get('update_tb'))
     attrs = {'Meta': Meta}
 
@@ -84,4 +89,6 @@ def init_modelform(model_class, fields, admin_class, **kwargs):
     create_class = (ModelForm, )
     model_form = type(name, create_class, attrs)
     setattr(model_form, '__new__', __new__)
+    if kwargs.get("request"):  # for form validator
+        setattr(model_form, '_request', kwargs.get("request"))
     return model_form

@@ -16,11 +16,11 @@ def my_courses(request):
     :return:
     """
     print('student')
-    # print(dir(request.user))
-    # obj = request.user.stu_account.profile.enrollment_set.select_related()
-    # print("objL", obj)
-    # for index in obj:
-    #     print(index.id)
+    print(request.user.stu_account)
+    obj = request.user.stu_account.profile.enrollment_set.select_related()
+    print("objL", obj)
+    for index in obj:
+        print(index.id)
     return render(request, "student/student_main_pg.html")
 
 
@@ -34,7 +34,7 @@ def my_homeworks(request, eid):
 @login_required
 @permission_control.check_permission
 def my_grade(reqeust):
-    pass
+    return HttpResponse("此功能暂未开通...")
 
 
 def get_uploaded_fileinfo(file_dic, upload_dir):

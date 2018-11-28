@@ -134,7 +134,7 @@
             selectall = false;
         }
         $("#cttb input[tag='row-check']").each(function (k, v) {
-            console.log(k, v);
+            //console.log(k, v);
             $(v).prop("checked", selectall);
         });
     }
@@ -157,7 +157,7 @@
             ck = $(this).children("td").first().find("input").val();
             if(ck){
                 var row_data = {};
-                console.log(ck);
+                //console.log(ck);
                 $(this).find("[data-tag='editable']").each(function () {
                     row_data[$(this).attr("name")] = $(this).val();
                 });
@@ -195,7 +195,7 @@
             $(form_ele).append(selected_ids_ele);
             return true
         }else{
-            console.log("取消");
+            //console.log("取消");
             return false;
         }
     }

@@ -38,9 +38,9 @@ class Customer(models.Model):
     # 假如新客户是老学员转介绍来了,如果是转介绍的,就在这里纪录是谁介绍的他,前提这个介绍人必须是我们的老学员,要不然系统里找不到
     referral_from = models.ForeignKey('self', verbose_name=u"转介绍自学员",
                                       help_text=u"若此客户是转介绍自内部学员,请在此处选择内部＼学员姓名",
-                                      blank=True, null=True, related_name="internal_referral", on_delete=None)
+                                      blank=True, null=True, related_name="internal_referral", on_delete=models.CASCADE)
     # 已开设的课程单独搞了张表，客户想咨询哪个课程，直接在这里关联就可以
-    course = models.ForeignKey("Course", verbose_name=u"咨询课程", on_delete=None)
+    course = models.ForeignKey("Course", verbose_name=u"咨询课程", on_delete=models.CASCADE)
     class_type_choices = (('online', u'网络班'),
                           ('offline_weekend', u'面授班(周末)',),
                           ('offline_fulltime', u'面授班(脱产)',),
@@ -55,7 +55,7 @@ class Customer(models.Model):
     status = models.CharField(u"状态", choices=status_choices, max_length=64,
                               default=u"unregistered", help_text=u"选择客户此时的状态")
     # 课程顾问,每个招生老师(销售)录入自己的客户
-    consultant = models.ForeignKey("UserProfile", verbose_name=u"课程顾问", on_delete=None)
+    consultant = models.ForeignKey("UserProfile", verbose_name=u"课程顾问", on_delete=models.CASCADE)
     date = models.DateField(u"咨询日期", auto_now_add=True)
 
     def __str__(self):
@@ -72,14 +72,13 @@ class Customer(models.Model):
                 raise forms.ValidationError(("必须走完报名流程后，此字段才能改名已报名"))
             else:
                 return status
-
         else:
             return status
 
     def clean_consultant(self):
         consultant = self.cleaned_data['consultant']
 
-        if self.instance.id is None :#add form
+        if self.instance.id is None:  # add form这里写死课程顾问为当前登陆的销售
             return self._request.user
 
         elif consultant.id != self.instance.consultant.id:
@@ -133,7 +132,7 @@ class CustomerFollowUp(models.Model):
                       )
     status = models.IntegerField(u"状态", choices=status_choices, help_text=u"选择客户此时的状态")
 
-    consultant = models.ForeignKey("UserProfile", verbose_name=u"跟踪人", on_delete=None)
+    consultant = models.ForeignKey("UserProfile", verbose_name=u"跟踪人", on_delete=models.CASCADE)
     date = models.DateField(u"跟进日期", auto_now_add=True)
 
     def __str__(self):
@@ -158,7 +157,7 @@ class ClassList(models.Model):
     graduate_date = models.DateField(u"结业日期", blank=True, null=True)
     # 选择这个班包括的讲师，可以是多个
     teachers = models.ManyToManyField("UserProfile", verbose_name=u"讲师")
-    contract = models.ForeignKey("ContractTemplate", blank=True, null=True, on_delete=None)
+    contract = models.ForeignKey("ContractTemplate", blank=True, null=True, on_delete=models.CASCADE)
 
     def __str__(self):
         return "%s(%s)" % (self.course, self.semester)
@@ -194,10 +193,10 @@ class Course(models.Model):
 class CourseRecord(models.Model):
     """存储各班级的上课记录"""
     # 讲师创建上课纪录时要选择是上哪个班的课
-    from_class = models.ForeignKey("ClassList", verbose_name=u"班级(课程)", on_delete=None)
+    from_class = models.ForeignKey("ClassList", verbose_name=u"班级(课程)", on_delete=models.CASCADE)
     day_num = models.IntegerField(u"节次", help_text=u"此处填写第几节课或第几天课程...,必须为数字")
     date = models.DateField(auto_now_add=True, verbose_name=u"上课日期")
-    teacher = models.ForeignKey("UserProfile", verbose_name=u"讲师", on_delete=None)
+    teacher = models.ForeignKey("UserProfile", verbose_name=u"讲师", on_delete=models.CASCADE)
     has_homework = models.BooleanField(default=True, verbose_name=u"本节有作业")
     homework_title = models.CharField(max_length=128, blank=True, null=True)
     homework_requirement = models.TextField(blank=True, null=True)
@@ -251,8 +250,7 @@ class UserProfile(auth.AbstractBaseUser, auth.PermissionsMixin):  # 自定义验
     )
     # password = models.CharField(_('password'), max_length=128,
     #                             help_text=mark_safe('''<a class='btn-link' href='password'>重置密码</a>'''))
-    password = models.CharField('password', max_length=128,
-                                help_text=mark_safe('''<a class='btn-link' href='password'>重置密码</a>'''),)
+    password = models.CharField(u"密码", max_length=128)
 
     is_active = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False)
@@ -261,10 +259,10 @@ class UserProfile(auth.AbstractBaseUser, auth.PermissionsMixin):  # 自定义验
         default=True,
         help_text='Designates whether the user can log into this admin site.',
     )
-    name = models.CharField(max_length=32)
+    name = models.CharField(max_length=32, verbose_name="用户名")
     # role = models.ForeignKey("Role",verbose_name="权限角色")
-    branch = models.ForeignKey("Branch", verbose_name="所属校区", blank=True, null=True, on_delete=None)
-    roles = models.ManyToManyField('Role', blank=True)
+    branch = models.ForeignKey("Branch", verbose_name="所属校区", blank=True, null=True, on_delete=models.CASCADE)
+    roles = models.ManyToManyField('Role', verbose_name="角色")
     memo = models.TextField('备注', blank=True, null=True, default=None)
     date_joined = models.DateTimeField(blank=True, null=True, auto_now_add=True)
     USERNAME_FIELD = 'email'  # 唯一标识
@@ -313,7 +311,7 @@ class UserProfile(auth.AbstractBaseUser, auth.PermissionsMixin):  # 自定义验
 
     @property
     def is_staff(self):
-        """不加这个报错"""
+        """是否运行user访问admin界面"""
         return self.is_active
 
     class Meta:
@@ -402,7 +400,7 @@ class PaymentRecord(models.Model):
     paid_fee = models.IntegerField(u"费用数额", default=0)
     note = models.TextField(u"备注", blank=True, null=True)
     date = models.DateTimeField(u"交款日期", auto_now_add=True)
-    consultant = models.ForeignKey(UserProfile, verbose_name=u"负责老师", help_text=u"谁签的单就选谁", on_delete=None)
+    consultant = models.ForeignKey(UserProfile, verbose_name=u"负责老师", help_text=u"谁签的单就选谁", on_delete=models.CASCADE)
 
     def __str__(self):
         return "%s, 类型:%s,数额:%s" % (self.enrollment.customer, self.pay_type, self.paid_fee)

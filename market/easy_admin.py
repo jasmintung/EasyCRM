@@ -79,6 +79,7 @@ class UserProfileAdmin(BaseEasyCrmAdmin):
     #         'fields': ('email', 'date_of_birth', 'password1', 'password2')}
     #     ),
     # )
+    readonly_fields = ['last_login', ]
     search_fields = ['email']
     ordering = ('email',)
     filter_horizontal = ('user_permissions', 'roles')
@@ -94,7 +95,7 @@ class CustomerAdmin(BaseEasyCrmAdmin):
     model = models.Customer
     # enroll字段用于表示不是表中的字段但前端显示时可以显示在同一张表信息中
     list_display = ('qq', 'qq_name', 'name', 'phone', 'source', 'consultant', 'status', 'date', 'enroll', )
-    list_editable = ['phone', 'source', 'consultant', 'status']
+    list_editable = ['phone', 'source']
     list_filter = ('source', 'consultant', 'status', 'date', )
     search_fields = ['qq', 'phone']
 
@@ -103,7 +104,7 @@ class CustomerAdmin(BaseEasyCrmAdmin):
         报名字段,用于客服帮助客户完成报名
         :return:
         """
-        print("CustomerAdmin func:enroll", self)
+        # print("CustomerAdmin func:enroll", self)
         link_name = "开始报名"
         if self.instance.status == 'signed':
             link_name = "继续报名"
@@ -135,7 +136,12 @@ class ClasslistAdmin(BaseEasyCrmAdmin):
     readonly_fields = ['price', 'semester']
 
 
-print("market register")
+class MenuAdmin(BaseEasyCrmAdmin):
+    list_display = ('name', 'url_type', 'url_name')
+    choice_fields = ['url_type']
+
+
+# print("market register")
 site.register(models.UserProfile, UserProfileAdmin)
 site.register(models.Customer, CustomerAdmin)
 site.register(models.Enrollment, EnrollmentAdmin)
@@ -143,6 +149,8 @@ site.register(models.Course, CourseAdmin)
 site.register(models.ClassList, ClasslistAdmin)
 site.register(models.Role, RoleAdmin)
 site.register(models.PaymentRecord, PaymentRecordAdmin)
+site.register(models.Menu, MenuAdmin)
+site.register(models.Branch)
 # ... and, since we're not using Django's built-in permissions,
 # unregister the Group model from admin.
 # site.unregister(Group)

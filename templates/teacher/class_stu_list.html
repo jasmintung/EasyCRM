@@ -33,7 +33,8 @@
                             <td>{{ enroll_obj.customer.qq }}</td>
                             <td>{{ enroll_obj.customer.name }}</td>
                             <td>{{ enroll_obj.enrolled_date}}</td>
-                            <td>{% get_study_record_count enroll_obj as study_records %}
+                            <td>
+                                {% get_study_record_count enroll_obj as study_records %}
                                 {%  fetch_stu_course_score class_grade_dic enroll_obj  %}
                             </td>
                             <td>

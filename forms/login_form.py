@@ -22,21 +22,28 @@ class LGFM(forms.Form):
 
     def __init__(self, *args, **kwargs):
         super(LGFM, self).__init__(*args, **kwargs)
-        print("init login form")
+        # print("init login form")
         # self.fields['username'] = kwargs.get('username')
         # self.fields['password'] = kwargs.get('password')
+
+    def clean_name(self):
+        name = self.cleaned_data['name']
+        # print("name:", name)
+        if UserProfile.objects.filter(name=name).first():
+            raise ValidationError('用户已存在!', 'invalid')  # 这里会返回到前端显示
+        return name
 
     def clean_password(self):
         """
         Form中字段中定义的匹配完成后,执行此方法进一步验证
         :return:
         """
-        print("clean_username: go here!!")
+        # print("clean_username: go here!!")
         name = self.cleaned_data['username']
         pwd = self.cleaned_data['password']
-        print(name)
-        print(UserProfile.objects.filter(email=name))
-        if UserProfile.objects.filter(username=name).first():
+        # print(name)
+        # print(UserProfile.objects.filter(email=name))
+        if UserProfile.objects.filter(name=name).first():
             if UserProfile.objects.filter(password=pwd).first():
                 pass
             else:

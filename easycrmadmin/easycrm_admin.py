@@ -19,6 +19,7 @@ class BaseEasyCrmAdmin(object):
     add_form = None
 
     def delete_selected_objs(self, request, querysets):
+        print("delete_selected_objs")
         app_name = self.model._meta.app_label
         model_name = self.model._meta.model_name
         errors = {}
@@ -26,9 +27,11 @@ class BaseEasyCrmAdmin(object):
             errors = {"readonly_tables": "这个表时是只读,不能被修改和删除!"}
         if not self.readonly_table:
             try:
+                # print(help(querysets.delete))
                 querysets.delete()  # 批量删除了
             except Exception as ex:
-                print(ex)
+                print("yichang:", ex)
+                # pass
         return redirect("/easycrmadmin/%s/%s" % (app_name, model_name))
     delete_selected_objs.short_description = "批量删除选择项目"
 
@@ -45,12 +48,13 @@ class EasySite(object):
         :return:
         """
         if model_class._meta.app_label not in self.enabled_funcs:
-            print("app name:", model_class._meta.app_label)
+            # print("app name:", model_class._meta.app_label)
             self.enabled_funcs[model_class._meta.app_label] = {}
         if not admin_class:  # 无定制admin
             admin_class = BaseEasyCrmAdmin()
         admin_class.model = model_class  # 绑定model class 和 admin
         self.enabled_funcs[model_class._meta.app_label][model_class._meta.model_name] = admin_class
+        # print(model_class._meta.app_label, model_class._meta.model_name, admin_class.list_display)
 
 
 site = EasySite()  # 其它APP都需要调用这个site中的register方法,来关联需要定制绑定的model class 和 Admin Class

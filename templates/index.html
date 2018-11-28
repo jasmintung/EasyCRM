@@ -18,10 +18,10 @@
         <nav class="col-md-2 d-none d-md-block bg-light sidebar">
           <div class="sidebar-sticky">
             <ul class="nav flex-column">
-            {% block menu_header %}
-            {% endblock %}
+{#            {% block menu_header %}#}
+{#            {% endblock %}#}
                 <!--菜单页更新不会那么频繁,缓存处理下--->
-                {% cache 3600 'menus_cache' %}
+{#                {% cache 10 'menus_cache' %}#}
                 {% load_menus request as menus%}
                 {% for m in menus %}
                     <li class="nav-item">
@@ -31,7 +31,7 @@
                         </a>
                     </li>
                 {% endfor %}
-                {% endcache %}
+{#                {% endcache %}#}
             </ul>
             <!--h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
               <span>Saved</span>

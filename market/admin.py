@@ -93,8 +93,8 @@ class CustomerAdmin(admin.ModelAdmin):
 
 
 class MenuAdmin(admin.ModelAdmin):
-    list_display = ('name', 'url_type', 'url_name', 'order')
-    filter_horizontal = ('sub_menus',)
+    list_display = ('name', 'url_type', 'url_name')
+    choice_fields = ('url_type')
 
 
 class RoleAdmin(admin.ModelAdmin):
@@ -131,3 +131,4 @@ admin.site.register(models.StuAccount)
 admin.site.register(models.CourseRecord)
 admin.site.register(models.StudyRecord, StudyRecordAdmin)
 admin.site.register(models.PaymentRecord, PaymentRecordAdmin)
+admin.site.register(models.Menu, MenuAdmin)

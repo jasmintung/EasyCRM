@@ -16,13 +16,15 @@ def table_filter(request, admin_class):
             if request.GET.get(condition):  # 前端有根据筛选字段进行数据请求
                 field_type = admin_class.model._meta.get_field(condition).__repr__()  # <django.db.models.fields.CharField: source>
                 # print("field type++:", field_type)
+                if 'CharField' in field_type:
+                    filter_conditions['%s' % condition] = request.GET.get(condition)
                 if 'ForeignKey' in field_type:  # 外键类型
                     filter_conditions['%s_id' % condition] = request.GET.get(condition)
                 elif 'DateField' in field_type:  # 日期类型
                     filter_conditions['%s__gt' % condition] = request.GET.get(condition)
                 elif 'ManyToMany' in field_type:  # 多对多类型
                     pass
-    print("filter conditions: ", filter_conditions)
+    # print("filter conditions: ", filter_conditions)
     return admin_class.model.objects.filter(**filter_conditions)
 
 
@@ -35,9 +37,11 @@ def table_search(request, querysets, admin_class):
     :return: 查询后的数据
     """
     search_condition = request.GET.get("q")
+    # print("search_condition:", search_condition)
     if search_condition:
         q_objs = []
         for q_filed in admin_class.search_fields:
+            # print("q_filed:search_condition", q_filed, search_condition)
             q_objs.append("Q(%s__contains='%s')" % (q_filed, search_condition))
         return querysets.filter(eval("|".join(q_objs)))
     return querysets
@@ -51,7 +55,7 @@ def table_orderby(request, querysets, admin_class):
     :param admin_class:
     :return:
     """
-    print(table_orderby.__name__)
+    # print(table_orderby.__name__)
     ordered_colnumber = -1
     # print("will to order data:", querysets)
     # print("admin_class:", admin_class)
@@ -102,15 +106,15 @@ class TableHandler(object):
                 'verbose_name': col_obj.verbose_name,
                 'column_name': i,
             }
-            print("字段类型:", col_obj.deconstruct()[1])  # 序列化对象获得类型
+            # print("字段类型:", col_obj.deconstruct()[1])  # 序列化对象获得类型
             if col_obj.deconstruct()[1] not in ('django.db.models.DateField', 'django.db.models.DateTimeField'):
                 try:
-                    print("ok:", col_obj.get_choices())
+                    # print("ok:", col_obj.get_choices())
                     choices = col_obj.get_choices()
 
                 except AttributeError as e:
                     choices_list = col_obj.model.objects.values(i).annotate(count=Count(i))
-                    print(choices_list)
+                    # print(choices_list)
                     choices = [[obj[i], obj[i]] for obj in choices_list]
                     choices.insert(0, ['', '----------'])
             else:  # 特殊处理datefield

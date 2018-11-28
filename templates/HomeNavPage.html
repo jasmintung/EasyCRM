@@ -14,6 +14,36 @@
 
     <!-- Custom styles for this template -->
     <link href="/static/css/cover.css" rel="stylesheet">
+    <style>
+        ul li{
+            list-style-type:none;
+            padding:0;	margin:0;
+        }
+        li a{
+            display:block;
+            width:100px;
+            text-align:center;
+            text-decoration:none;
+            color:#ffffff;
+            background-color:#000000;
+        }
+        li{
+            position:relative;
+            margin-bottom:2px;
+            float:left;
+            margin-right:5px;
+        }
+        li ul{
+            position:absolute;
+            left:5px;
+            top:30px;
+            display:none;
+            width:100px;
+        }
+        li:hover ul{
+            display:block;
+        }
+    </style>
   </head>
 
   <body class="text-center">
@@ -24,7 +54,15 @@
           <h3 class="masthead-brand">EasyCRM</h3>
           <nav class="nav nav-masthead justify-content-center">
             <a class="nav-link " href="/register/">注册</a>
-            <a class="nav-link active" href="#">联系我们</a>
+              <ul id="flow">
+                  <li>
+                      <a class="nav-link active" href="#">联系我们</a>
+                      <ul>
+                          <li>puzexiong@163.com</li>
+                          <li>QQ:317492296</li>
+                      </ul>
+                  </li>
+              </ul>
           </nav>
         </div>
       </header>
@@ -57,7 +95,7 @@
       </main>
       <footer class="mastfoot mt-auto">
         <div class="inner">
-          <p>EasyCRM system <a href="#">Tony</a>, by <a href="#">@Tony</a>.</p>
+          <p>EasyCRM system designed</a>, by <a href="#">@puzexiong@163.com</a>.</p>
         </div>
       </footer>
     </div>
