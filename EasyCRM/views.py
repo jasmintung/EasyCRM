@@ -3,6 +3,7 @@ from django.http import HttpResponseRedirect
 from django.views.generic import TemplateView
 from django.contrib.auth import authenticate, login as Login, logout as Logout
 from repository import models
+from student import models as stu_model
 from django.contrib.auth.hashers import check_password
 from django.contrib.auth.models import User, AbstractBaseUser
 from easycrmadmin import permission_control
@@ -29,12 +30,12 @@ def login(request):
     errors = ""
     error_info = {}
     if request.method == "POST":
-        print(request.POST.get('username'))
-        print(request.POST.get('password'))
+        # print(request.POST.get('username'))
+        # print(request.POST.get('password'))
         # print(request.POST.get('choice'))  # on 或者 None
         username = request.POST.get('username')
         password = request.POST.get('password')
-        print("password:", password)
+        # print("password:", password)
 
         try:
             users = authenticate(username=username, password=password)
@@ -43,6 +44,12 @@ def login(request):
                 if users.is_active:
                     # users.backend = 'guardian.backends.ObjectPermissionBackend' 搞不定这个,折腾了蛮久,后续有空再研究吧
                     users.backend = 'django.contrib.auth.backends.ModelBackend'
+                    usr_obj = models.UserProfile.objects.get(name=users.name)
+                    if models.UserProfile.objects.filter(roles__name='学员'):
+                        print("是学员......")
+                        if stu_model.Account.objects.filter(account=usr_obj).first() is None:
+                            errors = "您还未报名.请联系客服完成报名吧."
+                            return render(request, 'login.html', {'error_info': errors})
                     Login(request, users)
                     now_time = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time()))
                     users.last_login = now_time  # 使用自定义用户认证后会有一个最后登陆时间字段
@@ -54,7 +61,7 @@ def login(request):
                         if users.is_admin:
                             # t_list = []
                             print("是管理员")
-                            usr_obj = models.UserProfile.objects.get(name=users.name)
+
                             pm_list = permission_control.init_permissions(usr_obj, role.strip('/'))
                             request.user.user_permissions.remove()
                             # 终于实现了动态分配权限, what a day!!!
@@ -88,6 +95,7 @@ def login(request):
                         # 非管理员的非客户对象的账户及权限由管理员进行统一创建.
                         # print("1after fenpei:", request.user.has_perm("p1"))
                         # print("2after fenpei:", request.user.has_perm("repository.p5"))
+
                         return redirect(request.GET.get("next"))
                         # return redirect('/market')  # 测试登陆验证用
                 else:

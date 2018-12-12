@@ -149,7 +149,7 @@ class ClassList(models.Model):
     branch = models.ForeignKey("Branch", verbose_name=u"校区", on_delete=models.CASCADE)
     course = models.ForeignKey("Course", verbose_name=u"课程", on_delete=models.CASCADE)
     class_type_choices = ((0, '面授'), (1, '随到随学网络'))
-    class_type = models.SmallIntegerField(choices=class_type_choices, default=0)
+    class_type = models.SmallIntegerField(u"班级类型", choices=class_type_choices, default=0)
     total_class_nums = models.PositiveIntegerField("课程总节次", default=10)
     semester = models.IntegerField(u"学期")
     price = models.IntegerField(u"学费", default=10000)

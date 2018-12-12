@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from easycrmadmin import views as easyadmin_views
 from forms import ad_forms
 from repository import models
+from student import models as stu_model
 from market.easy_admin import site
 from forms import stu_form
 from django.core.cache import cache
@@ -157,6 +158,9 @@ def enrollment(request, nid):
                             if enroll_obj.paymentrecord_set.select_related().count() > 0:  # 查学员是否已经缴费
                                 result_msg = {'pass': 1, 'step': 5}
                                 print("enrollment success")
+                                # 创建学员Account记录
+                                r = stu_model.Account(account=request.user, profile=enroll_obj.customer)
+                                r.save()
                             else:
                                 # 等待假设财务核实账目
                                 fields = []
